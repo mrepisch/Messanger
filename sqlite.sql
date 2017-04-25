@@ -1,24 +1,7 @@
-CREATE TABLE user(
-				p_userID INTEGER PRIMARY KEY,
-				userName VARCHAR(20) NOT NULL,
-				password VARCHAR(50) NOT NULL
-				);
+CREATE TABLE IF NOT EXISTS users(p_userID INTEGER PRIMARY KEY AUTOINCREMENT, userName VARCHAR(100) NOT NULL, password VARCHAR(100) NOT NULL);
+								
+CREATE TABLE IF NOT EXISTS groups( p_groupID INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(30), privatchat BOOLEAN NOT NULL);
+
+CREATE TABLE IF NOT EXISTS groups_users( f_userID INTEGER, f_groupID INTEGER, FOREIGN KEY(f_userID) REFERENCES users(p_userID), FOREIGN KEY(f_groupID) REFERENCES groups(p_groupID));
 				
-				
-CREATE TABLE chat(
-				p_chatID INTEGER PRIMARY KEY,
-				f_user1 VARCHAR(20) NOT NULL,
-				f_user2 VARCHAR(20) NOT NULL,
-				FOREIGN KEY(f_user1) REFERENCES user(p_userID),
-				FOREIGN KEY(f_user2) REFERENCES user(p_userID)
-				);
-				
-CREATE TABLE message(
-				p_messageID INTEGER PRIMARY KEY,
-				text VARCHAR,
-				date DATETIME NOT NULL,
-				f_sentBy VARCHAR(20) NOT NULL,
-				f_chatID INTEGER NOT NULL,
-				FOREIGN KEY(f_chatID) REFERENCES chat(p_chatID),
-				FOREIGN KEY(sentBy) REFERENCES user(p_userID)
-				);
+CREATE TABLE IF NOT EXISTS messages( p_messageID INTEGER PRIMARY KEY AUTOINCREMENT, text VARCHAR, date DATETIME NOT NULL, f_sentBy VARCHAR(100) NOT NULL, f_chatID INTEGER NOT NULL, FOREIGN KEY(f_chatID) REFERENCES chats(p_chatID), FOREIGN KEY(f_sentBy) REFERENCES users(p_userID));
