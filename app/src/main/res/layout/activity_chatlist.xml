@@ -5,22 +5,37 @@
     android:layout_height="match_parent"
     android:id="@+id/layout"
     tools:context="main.nerd.messenger.ChatListActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:baselineAligned="false">
 
 
-    <EditText
-        android:id="@+id/search"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Benuter suchen" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Benutzer suchen"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/searchbtn"
+            android:layout_width="51dp"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/ic_menu_search"/>
+
+    </LinearLayout>
 
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/chatliste"
-        android:layout_gravity="bottom" >
+        android:layout_width="match_parent"
+        android:layout_height="468dp"
+        android:layout_gravity="bottom">
 
     </ListView>
 

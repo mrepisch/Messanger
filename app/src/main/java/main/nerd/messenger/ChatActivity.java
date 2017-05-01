@@ -3,7 +3,6 @@ package main.nerd.messenger;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import main.nerd.messenger.main.nerd.messenger.chat.MessageIncoming;
 
 public class ChatActivity extends FragmentActivity {
 

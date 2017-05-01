@@ -1,4 +1,4 @@
-package main.nerd.messenger.main.nerd.messenger.chat;
+package main.nerd.messenger.chat;
 
 import android.app.Fragment;
 import android.os.Bundle;
