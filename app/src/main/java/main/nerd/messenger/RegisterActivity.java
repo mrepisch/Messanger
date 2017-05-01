@@ -1,5 +1,6 @@
 package main.nerd.messenger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if( a_msg.equals("Register:sucess"))
                         {
                             a_error.setText("SUCCES");
+                            startLoginActivity();
                         }
                         else if( a_msg.equals("Register:faild:user_allready_exist"))
                         {
@@ -46,6 +48,12 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startLoginActivity()
+    {
+        Intent a_contactListActivity = new Intent( RegisterActivity.this,MainActivity.class );
+        RegisterActivity.this.startActivity(a_contactListActivity);
     }
 
 }
