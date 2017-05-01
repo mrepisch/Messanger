@@ -26,7 +26,7 @@ public class ChatListActivity extends AppCompatActivity {
         for (Chat b : allChats) {
 
         }
-        chats.setAdapter(chatliste);
+        //hats.setAdapter(chatliste);
         //Definition einer anonymen Klicklistener Klasse
         AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
