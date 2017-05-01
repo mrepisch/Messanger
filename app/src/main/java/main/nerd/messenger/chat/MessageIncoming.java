@@ -25,9 +25,7 @@ public class MessageIncoming extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-        //time = (TextView) (R.id.tv_time);
-        //chatText = (TextView) container.findViewById(R.id.tv_chat_text);
+        time = (TextView) getView().findViewById(R.id.tv_time);
+        chatText = (TextView) getView().findViewById(R.id.tv_chat_text);
     }
 }

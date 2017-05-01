@@ -18,9 +18,15 @@ public class MessageOutgoing extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        time = (TextView) container.findViewById(R.id.tv_time);
-        chatText = (TextView) container.findViewById(R.id.tv_chat_text);
-
         return inflater.inflate(R.layout.message_outgoing, container, false);
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        time = (TextView) getView().findViewById(R.id.tv_time);
+        chatText = (TextView) getView().findViewById(R.id.tv_chat_text);
+    }
+
 }
