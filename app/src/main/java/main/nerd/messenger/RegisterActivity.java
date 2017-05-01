@@ -24,28 +24,28 @@ public class RegisterActivity extends AppCompatActivity {
         a_registerBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String a_pw1 = a_password.getText().toString();
-
-                if (a_password.getText().toString().equals(a_paswordRepeat.getText().toString())) {
-                    SocketController.getInstance().getSocket().sendMessage("Register:"+a_username.getText()+":"+a_password.getText());
-                    while(SocketController.getInstance().gethasMsgs() == false) {}
-                    ArrayList<String> a_msgs = SocketController.getInstance().getReceivtMessages();
-                    String a_msgToDelete = null;
-                    for( String a_msg : a_msgs)
-                    {
-                        if( a_msg.equals("Register:sucess"))
-                        {
-                            a_error.setText("SUCCES");
-                            startLoginActivity();
+                if( !a_username.getText().toString().isEmpty() && !a_password.getText().toString().isEmpty() && !a_paswordRepeat.getText().toString().isEmpty()) {
+                    if (a_password.getText().toString().equals(a_paswordRepeat.getText().toString())) {
+                        SocketController.getInstance().getSocket().sendMessage("Register:" + a_username.getText() + ":" + a_password.getText());
+                        while (SocketController.getInstance().gethasMsgs() == false) {
                         }
-                        else if( a_msg.equals("Register:faild:user_allready_exist"))
-                        {
-                            a_error.setText("Benutzername existiert schon");
+                        ArrayList<String> a_msgs = SocketController.getInstance().getReceivtMessages();
+                        String a_msgToDelete = null;
+                        for (String a_msg : a_msgs) {
+                            if (a_msg.equals("Register:sucess")) {
+                                a_msgToDelete = a_msg;
+                                startLoginActivity();
+                            } else if (a_msg.equals("Register:faild:user_allready_exist")) {
+                                a_msgToDelete = a_msg;
+                                a_error.setText("Benutzername existiert schon");
+                            }
                         }
+                        SocketController.getInstance().removeMsg(a_msgToDelete);
+                    } else {
+                        a_error.setText("Passwörter sind nicht gleich");
                     }
-
-                } else {
-                    a_error.setText("Passwörter sind nicht gleich");
                 }
+
             }
         });
     }
@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void startLoginActivity()
     {
         Intent a_contactListActivity = new Intent( RegisterActivity.this,MainActivity.class );
+        finish();
         RegisterActivity.this.startActivity(a_contactListActivity);
     }
 

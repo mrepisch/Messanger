@@ -17,6 +17,8 @@ public class SocketController {
 
     private String m_userID;
 
+    private String m_userName;
+
     public static SocketController getInstance() {
         return ourInstance;
     }
@@ -24,6 +26,15 @@ public class SocketController {
     private SocketController() {
         m_socket = new MessengerTcpSocket();
         m_socket.start();
+    }
+
+    public void setUserName( String t_username){
+        m_userName = t_username;
+    }
+
+    public String getuserName()
+    {
+        return m_userName;
     }
 
     public synchronized ArrayList<String> getReceivtMessages()
@@ -53,13 +64,13 @@ public class SocketController {
 
     public void removeMsg(String t_msg)
     {
-        for( int i = 0; i < m_socket.getReceivedList().size(); i++)
-        {
-            if( t_msg.equals(m_socket.getReceivedList().get(i)))
-            {
-                m_socket.getReceivedList().remove(i);
+
+            for (int i = 0; i < m_socket.getReceivedList().size(); i++) {
+                if (t_msg.equals(m_socket.getReceivedList().get(i))) {
+                    m_socket.getReceivedList().remove(i);
+                }
             }
-        }
+
     }
 
 

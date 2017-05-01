@@ -1,7 +1,6 @@
 package main.nerd.messenger;
 
 import android.content.Intent;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -47,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
                         String[] a_split = a_msg.split(":");
                         if( a_split.length >= 3) {
                             SocketController.getInstance().setUserID(a_split[3]);
-                            startContactListActivity();
+                            SocketController.getInstance().setUserName(a_username);
                             a_msgToDelete = a_msg;
+                            startContactListActivity();
                         }
                     }
                     else if( a_msg.equals("Login:false"))
