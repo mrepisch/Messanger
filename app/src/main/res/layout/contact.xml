@@ -15,6 +15,6 @@
         android:id="@+id/addbtn"
         android:layout_width="37dp"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/ic_input_add"
-        android:layout_weight="0.11" />
+        android:layout_weight="0.10"
+        android:background="@android:drawable/ic_input_add" />
 </LinearLayout>
