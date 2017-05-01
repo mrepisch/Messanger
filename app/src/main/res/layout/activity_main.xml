@@ -26,7 +26,7 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:inputType="textPersonName"
-            android:text="Name"
+            android:hint="Benutzername"
             android:layout_height="wrap_content" />
 
         <EditText
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-
+            android:hint="Passwort"
             android:inputType="textPassword" />
 
         <Button
@@ -44,6 +44,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.14"
             android:text="Login" />
+
+        <TextView
+            android:id="@+id/loginResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:text="" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

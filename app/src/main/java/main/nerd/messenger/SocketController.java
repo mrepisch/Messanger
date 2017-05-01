@@ -15,6 +15,8 @@ public class SocketController {
 
     private boolean m_hasMessages = false;
 
+    private String m_userID;
+
     public static SocketController getInstance() {
         return ourInstance;
     }
