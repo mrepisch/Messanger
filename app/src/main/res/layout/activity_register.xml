@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="main.nerd.messenger.MainActivity">
+    tools:context="main.nerd.messenger.RegisterActivity">
 
 
     <LinearLayout
@@ -37,12 +37,13 @@
             android:hint="Passwort"
             android:inputType="textPassword" />
 
-        <Button
-            android:id="@+id/loginbtn"
+        <EditText
+            android:id="@+id/passwordRepeat"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
-            android:text="Login" />
+            android:ems="10"
+            android:hint="Passwort wiederholen"
+            android:inputType="textPasswordRepeat" />
 
         <Button
             android:id="@+id/registerbtn"
@@ -52,8 +53,15 @@
             android:layout_weight="0.00"
             android:text="Register" />
 
+        <Button
+            android:id="@+id/loginbtn"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
         <TextView
-            android:id="@+id/loginResponse"
+            android:id="@+id/registerResponse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.00"
