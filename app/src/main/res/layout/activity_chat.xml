@@ -20,11 +20,9 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Send"
+            android:text=">"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/h3"
-            android:textAppearance="@style/Light"
-            android:background="@drawable/btn_grey"
             android:layout_alignParentRight="true"
             android:stateListAnimator="@null"
             android:layout_centerInParent="true"/>
@@ -37,14 +35,10 @@
                 android:id="@+id/et_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/bt_attachment"
                 android:padding="@dimen/space15"
                 android:hint="Enter your message"
                 android:maxLines="3"
                 android:textSize="@dimen/h3"
-                android:textColor="@color/colorTextBlack"
-                android:textColorHint="@color/colorTextHint"
-                android:textAppearance="@style/Light"
                 android:background="@android:color/transparent"
                 android:inputType="textCapSentences"/>
         </RelativeLayout>
