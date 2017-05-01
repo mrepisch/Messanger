@@ -16,29 +16,8 @@ public class ChatListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        addChatsToList();
+        setContentView(R.layout.activity_chatlist);
     }
 
-    private void addChatsToList() {
-        ListView chats = (ListView) findViewById(R.id.chatliste);
-        final ArrayList<Chat> allChats = new ArrayList<Chat>();
-        for (Chat b : allChats) {
 
-        }
-        //hats.setAdapter(chatliste);
-        //Definition einer anonymen Klicklistener Klasse
-        AdapterView.OnItemClickListener mListClickedHandler = new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                String selected = parent.getItemAtPosition(position).toString();
-
-                Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
-
-                startActivity(intent);
-            }
-        };
-
-        chats.setOnItemClickListener(mListClickedHandler);
-    }
 }

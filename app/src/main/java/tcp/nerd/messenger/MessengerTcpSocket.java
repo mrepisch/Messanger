@@ -100,11 +100,6 @@ public class MessengerTcpSocket extends Thread{
         }
     }
 
-    public synchronized ArrayList<String>getReceivt()
-    {
-        return m_receivt;
-    }
-
     public void run()
     {
         connect();
@@ -117,12 +112,7 @@ public class MessengerTcpSocket extends Thread{
                 m_messagesToSend.clear();
             }
             try {
-                /*if(m_socket.getInputStream().available() > 0) {
-                    String fromServer = null;
-                    while ((  )!= null) {
-                        fromServer =  m_reader.readLine()
-                        m_receivt.add(fromServer);
-                    }*/
+
                 while( m_socket.getInputStream().available() > 0 )
                 {
                     String fromServer = m_reader.readLine();

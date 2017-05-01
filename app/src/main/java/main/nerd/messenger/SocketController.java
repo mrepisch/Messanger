@@ -28,7 +28,7 @@ public class SocketController {
 
     public synchronized ArrayList<String> getReceivtMessages()
     {
-        return m_socket.getReceivt();
+        return m_socket.getReceivedList();
     }
 
     public synchronized void setHasMsgs(boolean t_hasMessages)
@@ -44,6 +44,22 @@ public class SocketController {
     public synchronized  MessengerTcpSocket getSocket()
     {
         return m_socket;
+    }
+
+    public synchronized void setUserID(String t_userID)
+    {
+        m_userID = t_userID;
+    }
+
+    public void removeMsg(String t_msg)
+    {
+        for( int i = 0; i < m_socket.getReceivedList().size(); i++)
+        {
+            if( t_msg.equals(m_socket.getReceivedList().get(i)))
+            {
+                m_socket.getReceivedList().remove(i);
+            }
+        }
     }
 
 
