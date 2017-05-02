@@ -24,8 +24,9 @@ public class SocketController {
     }
 
     private SocketController() {
-        m_socket = new MessengerTcpSocket();
-        m_socket.start();
+
+
+
     }
 
     public void setUserName( String t_username){
@@ -73,6 +74,16 @@ public class SocketController {
                 }
             }
         }
+    }
+
+    public synchronized void setIpAndStartSocket(String t_ip,MainActivity t_activity)
+    {
+
+        m_socket = new MessengerTcpSocket(t_activity);
+        m_socket.setIpAndConnect(t_ip);
+        m_socket.start();
+
+
     }
 
 }

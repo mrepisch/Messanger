@@ -1,5 +1,6 @@
 package tcp.nerd.messenger;
 
+import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -44,10 +45,12 @@ public class MessengerTcpSocket extends Thread{
 
     ArrayList<String>m_receivt;
 
-    public MessengerTcpSocket()
+    MainActivity m_activity;
+
+    public MessengerTcpSocket(MainActivity t_activity)
     {
         super("socket");
-
+        m_activity = t_activity;
         m_messagesToSend = new ArrayList<String>();
         m_receivt = new ArrayList<String>();
         m_isRunning = true;
@@ -61,6 +64,14 @@ public class MessengerTcpSocket extends Thread{
             serverAddr = InetAddress.getByName(S_SERVERIP);
         } catch (UnknownHostException e) {
             e.printStackTrace();
+            m_receivt.add("ConnectionFAIL");
+            SocketController.getInstance().setHasMsgs(true);
+            return;
+        } catch( NetworkOnMainThreadException e)
+        {
+            m_receivt.add("ConnectionFAIL");
+            SocketController.getInstance().setHasMsgs(true);
+            return;
         }
         Log.e("TCP Client", "C: Connecting...");
         Log.e("SERVERIP:",serverAddr.toString());
@@ -70,6 +81,11 @@ public class MessengerTcpSocket extends Thread{
             m_socket = new Socket(serverAddr, S_SERVERPORT);
         } catch (IOException e) {
             e.printStackTrace();
+        }catch( NetworkOnMainThreadException e)
+        {
+            m_receivt.add("ConnectionFAIL");
+            SocketController.getInstance().setHasMsgs(true);
+            return;
         }
 
         try {
@@ -101,47 +117,77 @@ public class MessengerTcpSocket extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        catch( NetworkOnMainThreadException e)
+        {
+            m_receivt.add("ConnectionFAIL");
+            SocketController.getInstance().setHasMsgs(true);
+            return;
+        }
     }
 
-    public void run()
-    {
+    public void run() {
+/*
+      */
+
         connect();
-        while(m_isRunning) {
-            if (m_socket.isConnected()) {
-                for (int i = 0; i < m_messagesToSend.size(); i++) {
-                    m_writer.println(m_messagesToSend.get(i));
-                    m_writer.flush();
-                    m_messagesToSend.clear();
+        if( m_socket != null && m_socket.isConnected()) {
+            m_activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    m_activity.enableButtons();
                 }
-                try {
-
-                    while (m_socket.getInputStream().available() > 0) {
-                        String fromServer = m_reader.readLine();
-                        if (fromServer.length() > 0) {
-                            m_receivt.add(fromServer);
-                            SocketController.getInstance().setHasMsgs(true);
+            });
+        }
+            while (m_isRunning) {
+                if (m_socket != null && m_socket.isConnected()) {
+                        for (int i = 0; i < m_messagesToSend.size(); i++) {
+                            m_writer.println(m_messagesToSend.get(i));
+                            m_writer.flush();
+                            m_messagesToSend.clear();
                         }
+                        try {
 
+                            while (m_socket.getInputStream().available() > 0) {
+                                String fromServer = m_reader.readLine();
+                                if (fromServer.length() > 0) {
+                                    m_receivt.add(fromServer);
+                                    SocketController.getInstance().setHasMsgs(true);
+                                }
+
+                            }
+
+                            sleep(10);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        boolean test = true;
                     }
-
-                    sleep(10);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-                boolean test = true;
+            if (m_socket != null) {
+                closeConnection();
             }
         }
-        closeConnection();
-    }
 
-    public void setIpAndConnect(String ip){
+
+
+    public synchronized void setIpAndConnect(String ip){
         S_SERVERIP = ip;
     }
 
+    public void setIsRunning(boolean t_isRunning){
+        m_isRunning = t_isRunning;
+    }
 
+    public synchronized boolean getIsConnected()
+    {
+        if( m_socket != null) {
+            return m_socket.isConnected();
+        }
+        return false;
+    }
 }
 /*
 
