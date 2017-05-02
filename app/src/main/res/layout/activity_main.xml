@@ -59,5 +59,18 @@
             android:layout_weight="0.00"
             android:text="" />
 
+        <EditText
+            android:id="@+id/ip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="IP für Serververbindung"
+            android:inputType="text" />
+        <Button
+            android:id="@+id/ipbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="IP setzen" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

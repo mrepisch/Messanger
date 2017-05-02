@@ -19,6 +19,8 @@ public class SocketController {
 
     private String m_userName;
 
+    private String m_ipAdress;
+
     public static SocketController getInstance() {
         return ourInstance;
     }
@@ -73,5 +75,11 @@ public class SocketController {
 
     }
 
+    public void setIpAdress(String ipAdress) {
+        m_ipAdress = ipAdress;
+    }
 
+    public void setIpAdressIntoSocket(String ipAdress) {
+        m_socket.setIp(ipAdress);
+    }
 }
