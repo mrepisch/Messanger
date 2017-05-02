@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import main.nerd.messenger.main.nerd.messenger.chat.ContactAdapter;
@@ -86,6 +87,35 @@ public class ChatListActivity extends AppCompatActivity {
     private void readContactList()
     {
         m_contacts = ContactXmlModel.readContactXml(this,SocketController.getInstance().getuserName());
+        boolean a_hasDataChanged = false;
+        for( int i = 0; i < m_contacts.size(); i++)
+        {
+            if( m_contacts.get(i).getUserID() == null)
+            {
+                SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:"+m_contacts.get(i).getUserName());
+                while (SocketController.getInstance().gethasMsgs() == false) {}
+                ArrayList<String>a_msgs =  SocketController.getInstance().getReceivtMessages();
+                String a_msgToDelete;
+                for( String a_msg : a_msgs)
+                {
+                    if( a_msg.contains("Contact:search_for_userID:"))
+                    {
+                        a_msgToDelete = a_msg;
+                        String[] a_split = a_msg.split(":");
+                        if( a_split.length >= 3) {
+                            if (m_contacts.get(i).getUserName().equals(a_split[2])) {
+                                m_contacts.get(i).setUserID(a_split[3]);
+                                a_hasDataChanged = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if( a_hasDataChanged )
+        {
+            ContactXmlModel.writeNewContact(this,m_contacts,SocketController.getInstance().getuserName());
+        }
         ContactAvaiableAdapter adapter = new ContactAvaiableAdapter(ChatListActivity.this, m_contacts);
         ListView listView = (ListView) findViewById(R.id.contactList);
         listView.setAdapter(adapter);
