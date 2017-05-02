@@ -70,7 +70,6 @@ public class MessengerTcpSocket extends Thread{
             e.printStackTrace();
         }
 
-        PrintWriter a_writer = null;
         try {
 
             m_reader = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
@@ -133,6 +132,10 @@ public class MessengerTcpSocket extends Thread{
             boolean test = true;
         }
         closeConnection();
+    }
+
+    public void setIp(String ip){
+        S_SERVERIP = ip;
     }
 
 

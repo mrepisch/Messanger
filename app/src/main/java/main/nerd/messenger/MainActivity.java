@@ -61,6 +61,17 @@ public class MainActivity extends AppCompatActivity {
                 SocketController.getInstance().removeMsg(a_msgToDelete);
             }
         });
+
+        Button ipChangeButton = (Button) findViewById(R.id.ipbtn);
+        ipChangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText ipAdress =  (EditText)v.findViewById(R.id.ip);
+                String s = ipAdress.getText().toString();
+
+                SocketController.getInstance().setIpAdressIntoSocket(s);
+            }
+        });
     }
 
     private synchronized void startContactListActivity()
