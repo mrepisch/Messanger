@@ -28,6 +28,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button ipChangeButton = (Button) findViewById(R.id.ipbtn);
+        ipChangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText ipAdress =  (EditText) findViewById(R.id.ip);
+                String s = ipAdress.getText().toString();
+
+                s.replace("\n", "");
+
+                SocketController.getInstance().getSocket().setIpAndConnect(s);
+                while(SocketController.getInstance().gethasMsgs() == false) {}
+                ArrayList<String>a_msgs = SocketController.getInstance().getReceivtMessages();
+                String a_msgToDelete = null;
+                for( String a_msg : a_msgs)
+                {
+                    if( a_msg.equals("ConnectionOK"))
+                    {
+                        a_msgToDelete = a_msg;
+                        enableButtons();
+                    }
+                }
+                SocketController.getInstance().removeMsg(a_msgToDelete);
+            }
+        });
+
         final Button a_loginButton =(Button) findViewById(R.id.loginbtn);
         a_loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -61,17 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 SocketController.getInstance().removeMsg(a_msgToDelete);
             }
         });
-
-        Button ipChangeButton = (Button) findViewById(R.id.ipbtn);
-        ipChangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText ipAdress =  (EditText)v.findViewById(R.id.ip);
-                String s = ipAdress.getText().toString();
-
-                SocketController.getInstance().setIpAdressIntoSocket(s);
-            }
-        });
     }
 
     private synchronized void startContactListActivity()
@@ -86,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivity(a_registerActivity);
     }
 
+    public void enableButtons() {
+        Button loginBtn = (Button) findViewById(R.id.loginbtn);
+        Button registerBtn = (Button) findViewById(R.id.registerbtn);
 
+        loginBtn.setEnabled(true);
+        registerBtn.setEnabled(true);
+    }
 
 }

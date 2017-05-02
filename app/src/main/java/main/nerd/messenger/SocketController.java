@@ -19,8 +19,6 @@ public class SocketController {
 
     private String m_userName;
 
-    private String m_ipAdress;
-
     public static SocketController getInstance() {
         return ourInstance;
     }
@@ -66,20 +64,15 @@ public class SocketController {
 
     public void removeMsg(String t_msg)
     {
+        if( t_msg != null) {
+
 
             for (int i = 0; i < m_socket.getReceivedList().size(); i++) {
                 if (t_msg.equals(m_socket.getReceivedList().get(i))) {
                     m_socket.getReceivedList().remove(i);
                 }
             }
-
+        }
     }
 
-    public void setIpAdress(String ipAdress) {
-        m_ipAdress = ipAdress;
-    }
-
-    public void setIpAdressIntoSocket(String ipAdress) {
-        m_socket.setIpAndConnect(ipAdress);
-    }
 }

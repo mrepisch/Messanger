@@ -1,6 +1,7 @@
 package tcp.nerd.messenger;
 
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -25,7 +26,7 @@ import main.nerd.messenger.SocketController;
 
 public class MessengerTcpSocket extends Thread{
 
-    private static String S_SERVERIP = "172.16.2.148";
+    private static String S_SERVERIP = "172.0.0.1";
     //private static String S_SERVERIP = "10.0.2.2";
     private static int S_SERVERPORT = 6996;
 
@@ -62,6 +63,7 @@ public class MessengerTcpSocket extends Thread{
             e.printStackTrace();
         }
         Log.e("TCP Client", "C: Connecting...");
+        Log.e("SERVERIP:",serverAddr.toString());
 
         //create a socket to make the connection with the server
         try {
@@ -74,6 +76,8 @@ public class MessengerTcpSocket extends Thread{
 
             m_reader = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
             m_writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(m_socket.getOutputStream())), true);
+            m_receivt.add("ConnectionOK");
+            SocketController.getInstance().setHasMsgs(true);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,41 +106,39 @@ public class MessengerTcpSocket extends Thread{
     public void run()
     {
         connect();
-        while(m_isRunning)
-        {
-            for( int i = 0; i < m_messagesToSend.size(); i++)
-            {
-                m_writer.println(m_messagesToSend.get(i));
-                m_writer.flush();
-                m_messagesToSend.clear();
-            }
-            try {
-
-                while( m_socket.getInputStream().available() > 0 )
-                {
-                    String fromServer = m_reader.readLine();
-                    if( fromServer.length() > 0) {
-                        m_receivt.add(fromServer);
-                        SocketController.getInstance().setHasMsgs(true);
-                    }
-
+        while(m_isRunning) {
+            if (m_socket.isConnected()) {
+                for (int i = 0; i < m_messagesToSend.size(); i++) {
+                    m_writer.println(m_messagesToSend.get(i));
+                    m_writer.flush();
+                    m_messagesToSend.clear();
                 }
+                try {
+
+                    while (m_socket.getInputStream().available() > 0) {
+                        String fromServer = m_reader.readLine();
+                        if (fromServer.length() > 0) {
+                            m_receivt.add(fromServer);
+                            SocketController.getInstance().setHasMsgs(true);
+                        }
+
+                    }
 
                     sleep(10);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                boolean test = true;
             }
-            boolean test = true;
         }
         closeConnection();
     }
 
     public void setIpAndConnect(String ip){
         S_SERVERIP = ip;
-        connect();
     }
 
 
