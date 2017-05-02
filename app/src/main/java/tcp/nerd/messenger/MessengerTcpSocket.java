@@ -134,8 +134,9 @@ public class MessengerTcpSocket extends Thread{
         closeConnection();
     }
 
-    public void setIp(String ip){
+    public void setIpAndConnect(String ip){
         S_SERVERIP = ip;
+        connect();
     }
 
 

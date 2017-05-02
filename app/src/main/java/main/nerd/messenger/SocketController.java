@@ -80,6 +80,6 @@ public class SocketController {
     }
 
     public void setIpAdressIntoSocket(String ipAdress) {
-        m_socket.setIp(ipAdress);
+        m_socket.setIpAndConnect(ipAdress);
     }
 }
