@@ -26,6 +26,7 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         String a_userName = getIntent().getStringExtra("username");
         m_model = SocketController.getInstance().getChat(a_userName);
         final EditText a_msg = (EditText)findViewById(R.id.msg);
+        SocketController.getInstance().addTcMessageReader(this);
         Button a_sendBtn = (Button)findViewById(R.id.send);
         a_sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
