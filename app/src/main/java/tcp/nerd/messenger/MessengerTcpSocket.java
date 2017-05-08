@@ -155,7 +155,7 @@ public class MessengerTcpSocket extends Thread{
                                 }
 
                             }
-
+                            SocketController.getInstance().processMessage();
                             sleep(10);
 
                         } catch (IOException e) {

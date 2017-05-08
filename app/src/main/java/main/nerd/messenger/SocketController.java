@@ -1,7 +1,12 @@
 package main.nerd.messenger;
 
+import android.app.ActivityManager;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import main.nerd.messenger.main.nerd.messenger.chat.ChatModel;
+import tcp.nerd.messenger.ChatWorkerThreat;
 import tcp.nerd.messenger.MessengerTcpSocket;
 
 /**
@@ -13,20 +18,23 @@ public class SocketController {
 
     private MessengerTcpSocket m_socket;
 
+    private ChatWorkerThreat m_chatWorker = new ChatWorkerThreat();
+
     private boolean m_hasMessages = false;
 
     private String m_userID;
 
     private String m_userName;
 
+    private ArrayList<ChatModel>m_chatModels;
+
+    private ArrayList<TcpMessageReader>m_activitys = new ArrayList<TcpMessageReader>();
+
     public static SocketController getInstance() {
         return ourInstance;
     }
 
     private SocketController() {
-
-
-
     }
 
     public void setUserName( String t_username){
@@ -76,6 +84,32 @@ public class SocketController {
         }
     }
 
+    public void addTcMessageReader(TcpMessageReader t_reader)
+    {
+        m_activitys.add(t_reader);
+    }
+
+    public void removeMessageReader(String name)
+    {
+        for( int i = 0; i < m_activitys.size(); i++)
+        {
+            if( m_activitys.get(i).getName().equals(name))
+            {
+                m_activitys.remove(i);
+            }
+        }
+    }
+
+    public synchronized void processMessage()
+    {
+        for( int i = 0; i < m_activitys.size(); i++)
+        {
+            if( m_activitys.get(i) != null) {
+                m_activitys.get(i).readMessages(m_socket.getReceivedList());
+            }
+        }
+    }
+
     public synchronized void setIpAndStartSocket(String t_ip,MainActivity t_activity)
     {
 
@@ -86,4 +120,41 @@ public class SocketController {
 
     }
 
+    public ChatModel getChat(String a_userName) {
+        ChatModel r_mode = null;
+        for( int i = 0; i < m_chatModels.size(); i++)
+        {
+            if( m_chatModels.get(i).getUserNameTo().equals(a_userName))
+            {
+                r_mode = m_chatModels.get(i);
+            }
+        }
+        return r_mode;
+    }
+
+    public void addChat(ChatModel chatModel) {
+        m_chatModels.add(chatModel);
+    }
+
+    public boolean getHasChatAllready(String userName) {
+        if( getChat(userName) == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void removeChat(String userName) {
+        for( int i = 0; i < m_chatModels.size(); i++)
+        {
+            if( m_chatModels.get(i).getUserNameTo().equals(userName))
+            {
+                m_chatModels.remove(i);
+            }
+        }
+    }
+
+    public void startChatWorkerThreath() {
+        m_chatWorker.start();
+    }
 }

@@ -40,10 +40,21 @@ public class ContactXmlModel {
 
     private String m_userID;
 
+    private boolean m_isOnline;
 
     public ContactXmlModel()
     {
 
+    }
+
+    public void setIsOnline(boolean t_isOnline)
+    {
+        m_isOnline = t_isOnline;
+    }
+
+    public boolean getIsOnline()
+    {
+        return m_isOnline;
     }
 
     public void setUserName(String t_username)
@@ -65,6 +76,8 @@ public class ContactXmlModel {
     {
         return m_userID;
     }
+
+
 
     public static void writeNewContact( ChatListActivity t_activity, ArrayList<ContactXmlModel>t_model, String t_userName)
     {

@@ -30,14 +30,14 @@ import java.util.regex.Pattern;
 
 import tcp.nerd.messenger.MessengerTcpSocket;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TcpMessageReader{
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        SocketController.getInstance().addTcMessageReader(this);
         final EditText ipAdressText =  (EditText) findViewById(R.id.ip);
         String a_ip = getIpFromConfig(this);
         if( a_ip.length() > 0) {
@@ -71,27 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 SocketController.getInstance().getSocket().sendMessage("Login:username:"+a_username+":pw:"+a_password);
                 while(SocketController.getInstance().gethasMsgs() == false) {}
                 ArrayList<String>a_msgs = SocketController.getInstance().getReceivtMessages();
-                String a_msgToDelete = null;
-                for( String a_msg : a_msgs)
-                {
-                    if( a_msg.contains("Login:true"))
-                    {
-                        String[] a_split = a_msg.split(":");
-                        if( a_split.length >= 3) {
-                            SocketController.getInstance().setUserID(a_split[3]);
-                            SocketController.getInstance().setUserName(a_username);
-                            a_msgToDelete = a_msg;
-                            startContactListActivity();
-                        }
-                    }
-                    else if( a_msg.equals("Login:false"))
-                    {
-                        TextView a_loginResponse = (TextView)findViewById(R.id.loginResponse);
-                        a_loginResponse.setText("Falscher Benutzername oder Passwort");
-                        a_msgToDelete = a_msg;
-                    }
-                }
-                SocketController.getInstance().removeMsg(a_msgToDelete);
+
             }
         });
     }
@@ -119,34 +99,30 @@ public class MainActivity extends AppCompatActivity {
 
         ipAdress.replace("\n", "");
         SocketController.getInstance().setIpAndStartSocket(ipAdress,this);
-
-
-
     }
 
     public String getIpFromConfig(Context context) {
        String ipAdress = "";
         File file = new File(context.getFilesDir(),"config.txt");
-        BufferedReader a_reader = null;
-        try {
-            a_reader = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();e.printStackTrace();
+        if( file.exists()) {
+            BufferedReader a_reader = null;
+            try {
+                a_reader = new BufferedReader(new FileReader(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                e.printStackTrace();
+            }
+            try {
+                ipAdress = a_reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            ipAdress =a_reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return ipAdress;
     }
 
     public void writeIntoConfig(String ipAdress, Context context) {
         try {
-            /*utputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("ipconfig.txt", Context.MODE_PRIVATE));
-            outputStreamWriter.write(ipAdress);
-            outputStreamWriter.close();*/
             File a_file = new File(context.getFilesDir(),"config.txt");
             BufferedWriter a_writer =  new BufferedWriter(new FileWriter(a_file));
             a_writer.write(ipAdress);
@@ -157,4 +133,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void readMessages(final ArrayList<String> t_messages) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            String a_msgToDelete = null;
+            for( String a_msg : t_messages)
+            {
+                if( a_msg.contains("Login:true"))
+                {
+                    String[] a_split = a_msg.split(":");
+                    if( a_split.length >= 3) {
+                        SocketController.getInstance().setUserID(a_split[3]);
+                        EditText a_userName = (EditText) MainActivity.this.findViewById(R.id.username);
+                        SocketController.getInstance().setUserName(a_userName.getText().toString());
+                        a_msgToDelete = a_msg;
+                        startContactListActivity();
+                    }
+                }
+                else if( a_msg.equals("Login:false"))
+                {
+                    TextView a_loginResponse = (TextView)findViewById(R.id.loginResponse);
+                    a_loginResponse.setText("Falscher Benutzername oder Passwort");
+                    a_msgToDelete = a_msg;
+                }
+            }
+                SocketController.getInstance().removeMsg(a_msgToDelete);
+            }
+        });
+    }
+
+    @Override
+    public String getName() {
+        return "main";
+    }
 }

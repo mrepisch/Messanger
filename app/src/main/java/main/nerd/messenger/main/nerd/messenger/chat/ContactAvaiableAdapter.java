@@ -17,6 +17,7 @@ import main.nerd.messenger.ChatActivity;
 import main.nerd.messenger.ChatListActivity;
 import main.nerd.messenger.MainActivity;
 import main.nerd.messenger.R;
+import main.nerd.messenger.SocketController;
 
 /**
  * Created by bblans on 01.05.2017.
@@ -47,14 +48,25 @@ public class ContactAvaiableAdapter extends ArrayAdapter<ContactXmlModel> {
 
 
         Button startChatBtn = (Button) convertView.findViewById(R.id.startChatBtn);
-        startChatBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v)
+        if( user.getIsOnline()) {
+            if( SocketController.getInstance().getHasChatAllready(user.getUserName()) == false)
             {
-                Intent a_contactListActivity = new Intent( m_activity,ChatActivity.class );
-                m_activity.startActivity(a_contactListActivity);
+                SocketController.getInstance().addChat(new ChatModel(user.getUserName()));
             }
-        });
+            startChatBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent a_contactListActivity = new Intent(m_activity, ChatActivity.class);
+                    a_contactListActivity.putExtra("username",user.getUserName());
+                    m_activity.startActivity(a_contactListActivity);
 
+                }
+            });
+        }
+        else
+        {
+            startChatBtn.setVisibility(View.INVISIBLE);
+            SocketController.getInstance().removeChat(user.getUserName());
+        }
         Button a_addBtn = (Button)convertView.findViewById(R.id.delBtn);
         a_addBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
