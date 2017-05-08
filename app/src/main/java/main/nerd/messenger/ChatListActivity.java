@@ -194,6 +194,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
+            SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
             Log.w("KLICK ON BACK","TRUE");
             this.finish();
             return false;
