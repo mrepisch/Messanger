@@ -30,22 +30,7 @@ public class ChatWorkerThreat extends Thread  {
             while (SocketController.getInstance().gethasMsgs() == false) {
             }
             ArrayList<String> a_msgs = SocketController.getInstance().getReceivtMessages();
-            String a_msgToDelete = null;
-            for (String a_msg : a_msgs) {
-                if (a_msg.contains("Message")) {
-                    a_msgToDelete = a_msg;
-                    String[] a_split = a_msg.split(":");
-                    if( a_split.length >= 3)
-                    {
-                        ChatModel a_model = SocketController.getInstance().getChat(a_split[1]);
-                        if( a_model != null)
-                        {
-                            a_model.addMessages(a_split[2],a_split[1]);
-                        }
-                    }
-                }
-            }
-            SocketController.getInstance().removeMsg(a_msgToDelete);
+
         }
     }
 }
