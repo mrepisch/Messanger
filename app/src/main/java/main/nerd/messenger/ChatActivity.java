@@ -15,7 +15,7 @@ import main.nerd.messenger.main.nerd.messenger.chat.ContactAdapter;
 import main.nerd.messenger.main.nerd.messenger.chat.MessageAdapter;
 
 
-public class ChatActivity extends FragmentActivity {
+public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
 
     private  ChatModel m_model = null;
     private boolean m_keepUpdating = true;
@@ -70,4 +70,34 @@ public class ChatActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public void readMessages(final ArrayList<String> t_messages) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String a_msgToDelete = null;
+                for (String a_msg : t_messages) {
+                    if (a_msg.contains("Message")) {
+                        a_msgToDelete = a_msg;
+                        String[] a_split = a_msg.split(":");
+                        if( a_split.length >= 3)
+                        {
+                            ChatModel a_model = SocketController.getInstance().getChat(a_split[1]);
+                            if( a_model != null)
+                            {
+                                a_model.addMessages(a_split[2],a_split[1]);
+                            }
+                        }
+                    }
+                }
+                SocketController.getInstance().removeMsg(a_msgToDelete);
+                loadChat();
+            }
+        });
+    }
+
+    @Override
+    public String getName() {
+        return "chat";
+    }
 }

@@ -152,6 +152,6 @@ public class SocketController {
     }
 
     public void startChatWorkerThreath() {
-        m_chatWorker.start();
+        //m_chatWorker.start();
     }
 }
