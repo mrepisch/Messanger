@@ -35,8 +35,8 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.right, parent, false);
                 TextView a_msg = (TextView) convertView.findViewById(R.id.msgr);
                 a_msg.setText(a_message.getMessage());
-                TextView a_timeView = (TextView)convertView.findViewById(R.id.timer);
-                a_timeView.setText(a_message.getDate());
+
+
             }
         }
         else
@@ -45,8 +45,8 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.left, parent, false);
                 TextView a_msg = (TextView) convertView.findViewById(R.id.msgl);
                 a_msg.setText(a_message.getMessage());
-                TextView a_timeView = (TextView)convertView.findViewById(R.id.timel);
-                a_timeView.setText(a_message.getDate());
+
+
             }
 
         }
