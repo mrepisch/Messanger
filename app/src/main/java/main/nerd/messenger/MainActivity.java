@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     {
         super.onDestroy();
         Log.w("DESTROY MAINACTIVITY","TRUE");
-        SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
+
 
         SocketController.getInstance().removeMessageReader(getName());
         SocketController.getInstance().getSocket().closeConnection();
@@ -177,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
+            SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
             Log.w("KLICK ON BACK","TRUE");
             finish();
             return false;
