@@ -32,7 +32,7 @@ public class ChatActivity extends FragmentActivity {
                 String a_msgStr = a_msg.getText().toString().replace("\n","");
                 SocketController.getInstance().getSocket().sendMessage("Message:"+ SocketController.getInstance().getuserName()+":"+
                         m_model.getUserNameTo()+":"+a_msgStr );
-                m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
+                m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName(),"00");
             }
         });
         new Thread()
