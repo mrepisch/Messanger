@@ -35,7 +35,7 @@ public class ChatModel {
         m_messanges.add(new MessageModel(t_from, t_message ));
     }
 
-    public ArrayList<MessageModel>getMessages()
+    public synchronized  ArrayList<MessageModel>getMessages()
     {
         return m_messanges;
     }
