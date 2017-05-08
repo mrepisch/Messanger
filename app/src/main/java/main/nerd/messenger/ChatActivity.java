@@ -34,8 +34,8 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
                         m_model.getUserNameTo()+":"+a_msgStr );
                 SocketController.getInstance().getSocket().sendMessage("Message:"+ m_model.getUserNameTo()+":"+
                         SocketController.getInstance().getuserName()+":"+a_msgStr );
-                m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
-                a_msg.setText("");
+                //m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
+                //a_msg.setText("");
             }
         });
         new Thread()
