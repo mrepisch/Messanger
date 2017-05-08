@@ -65,6 +65,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     private void addContactToList(ContactXmlModel t_model)
     {
+
         m_contacts.add(t_model);
         ContactXmlModel.writeNewContact(this,m_contacts, SocketController.getInstance().getuserName());
     }
@@ -111,13 +112,8 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         }.start();
     }
 
-
-    final boolean a_hasDataChanged = false;
     @Override
     public void readMessages(final ArrayList<String> t_messages) {
-
-
-
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
