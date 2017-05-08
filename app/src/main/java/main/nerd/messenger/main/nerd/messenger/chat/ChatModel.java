@@ -27,12 +27,12 @@ public class ChatModel {
     }
 
 
-    public  synchronized   void addMessages(String t_message, String t_from,String time)
+    public  synchronized   void addMessages(String t_message, String t_from)
     {
         m_hasChanges = true;
 
 
-        m_messanges.add(new MessageModel(t_from, t_message, time ));
+        m_messanges.add(new MessageModel(t_from, t_message ));
     }
 
     public ArrayList<MessageModel>getMessages()

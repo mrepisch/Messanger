@@ -21,15 +21,5 @@
             android:text="Sampletext"
             android:textSize="@dimen/h3"
             android:background="@drawable/textview"/>
-        <TextView
-            android:id="@+id/timel"
-            android:layout_toRightOf="@id/msgl"
-            android:layout_marginLeft="@dimen/space10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/space5"
-            android:text="5:04pm"
-            android:textSize="@dimen/h4"
-            android:layout_centerVertical="true"/>
     </LinearLayout>
 </RelativeLayout>
