@@ -17,7 +17,7 @@ import main.nerd.messenger.main.nerd.messenger.chat.MessageAdapter;
 
 public class ChatActivity extends FragmentActivity {
 
-    private ChatModel m_model = null;
+    private  ChatModel m_model = null;
     private boolean m_keepUpdating = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,5 @@ public class ChatActivity extends FragmentActivity {
 
         }
     }
-
-
-
 
 }

@@ -16,14 +16,14 @@ public class MessageModel {
 
     }
 
-    public String getMessage()
+    public synchronized String getMessage()
     {
         return m_message;
     }
 
 
 
-    public String getFrom()
+    public synchronized  String getFrom()
     {
         return m_from;
     }
