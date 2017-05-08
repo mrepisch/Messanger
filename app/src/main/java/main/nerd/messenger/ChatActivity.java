@@ -93,7 +93,7 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
                     }
                 }
                 SocketController.getInstance().removeMsg(a_msgToDelete);
-                //loadChat();
+                loadChat();
             }
         });
     }
