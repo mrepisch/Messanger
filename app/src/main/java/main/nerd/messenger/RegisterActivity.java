@@ -52,9 +52,8 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
 
                 String a_msgToDelete = null;
                 final TextView a_error = (TextView)findViewById(R.id.errors);
-
                 for (String a_msg : t_messages) {
-                    if (a_msg.equals("Register:sucess")) {
+                    if (a_msg.contains("Register:succes")) {
                         a_msgToDelete = a_msg;
                         startLoginActivity();
                     } else if (a_msg.equals("Register:faild:user_allready_exist")) {

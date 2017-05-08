@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         SocketController.getInstance().addTcMessageReader(this);
         final EditText ipAdressText =  (EditText) findViewById(R.id.ip);
         String a_ip = getIpFromConfig(this);
-        if( a_ip.length() > 0) {
+        if( a_ip != null && a_ip.length() > 0) {
             ipAdressText.setText(a_ip);
         }
         Log.w("On Create","1");
