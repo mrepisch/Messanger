@@ -117,7 +117,7 @@ public class SocketController {
 
     }
 
-    public ChatModel getChat(String a_userName) {
+    public synchronized ChatModel getChat(String a_userName) {
         ChatModel r_mode = null;
         for( int i = 0; i < m_chatModels.size(); i++)
         {
