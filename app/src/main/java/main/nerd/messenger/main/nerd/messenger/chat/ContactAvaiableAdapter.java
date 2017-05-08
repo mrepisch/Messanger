@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class ContactAvaiableAdapter extends ArrayAdapter<ContactXmlModel> {
 
         Button startChatBtn = (Button) convertView.findViewById(R.id.startChatBtn);
         if( user.getIsOnline()) {
+            Log.w("USER IS ONLINE:",user.getUserName());
             if( SocketController.getInstance().getHasChatAllready(user.getUserName()) == false)
             {
                 SocketController.getInstance().addChat(new ChatModel(user.getUserName()));

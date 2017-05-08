@@ -38,7 +38,11 @@ public class ChatWorkerThreat extends Thread  {
                     if( a_split.length >= 3)
                     {
                         ChatModel a_model = SocketController.getInstance().getChat(a_split[1]);
-                        a_model.addMessages(a_split[2],a_split[1]);
+                        if( a_model != null)
+                        {
+                            a_model.addMessages(a_split[2],a_split[1]);
+                        }
+
                     }
 
                 }

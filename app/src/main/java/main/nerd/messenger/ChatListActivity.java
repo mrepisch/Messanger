@@ -59,6 +59,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     private void updateContactList()
     {
+        Log.w("TEST","UPDATE KONTAKT LIST");
         ContactAvaiableAdapter adapter = new ContactAvaiableAdapter(ChatListActivity.this, m_contacts);
         ListView listView = (ListView) findViewById(R.id.contactList);
         listView.setAdapter(adapter);
@@ -122,6 +123,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                 {
                     String a_msgToDelete = null;
                     if (a_msg.contains("Contact:search_for_userID:")) {
+
                         a_msgToDelete = a_msg;
                         String[] a_split = a_msg.split(":");
                         if (a_split.length >= 4) {

@@ -121,9 +121,6 @@ public class MessengerTcpSocket extends Thread{
     }
 
     public void run() {
-/*
-      */
-
         connect();
         if( m_socket != null && m_socket.isConnected()) {
             m_activity.runOnUiThread(new Runnable() {
