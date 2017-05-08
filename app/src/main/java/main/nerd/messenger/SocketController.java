@@ -109,11 +109,9 @@ public class SocketController {
 
     public synchronized void setIpAndStartSocket(String t_ip,MainActivity t_activity)
     {
-
         m_socket = new MessengerTcpSocket(t_activity);
-        m_socket.setIpAndConnect(t_ip);
         m_socket.start();
-
+        m_socket.setIpAndConnect(t_ip);
 
     }
 

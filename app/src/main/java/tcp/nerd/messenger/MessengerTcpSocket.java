@@ -114,6 +114,7 @@ public class MessengerTcpSocket extends Thread{
     {
         try {
             m_socket.close();
+            m_socket = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,31 +127,47 @@ public class MessengerTcpSocket extends Thread{
     }
 
     public void run() {
-        connect();
-        if( m_socket != null && m_socket.isConnected()) {
-            m_activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    m_activity.enableButtons();
-                }
-            });
-        }
+
+
+
             while (m_isRunning) {
+                if( m_socket == null || m_socket.isConnected() == false) {
+                    connect();
+                }
+                if( m_socket != null && m_socket.isConnected()) {
+                    m_activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            m_activity.enableButtons(true);
+                        }
+                    });
+                }
+                else
+                {
+                    m_activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            m_activity.enableButtons(false);
+                        }
+                    });
+                }
                 if (m_socket != null && m_socket.isConnected()) {
                         for (int i = 0; i < m_messagesToSend.size(); i++) {
                             m_writer.println(m_messagesToSend.get(i));
                             m_writer.flush();
                             m_messagesToSend.clear();
                         }
+
                         try {
+                            if( m_socket.isConnected() ) {
+                                while (m_socket.getInputStream().available() > 0) {
+                                    String fromServer = m_reader.readLine();
+                                    if (fromServer.length() > 0) {
+                                        m_receivt.add(fromServer);
+                                        SocketController.getInstance().setHasMsgs(true);
+                                    }
 
-                            while (m_socket.getInputStream().available() > 0) {
-                                String fromServer = m_reader.readLine();
-                                if (fromServer.length() > 0) {
-                                    m_receivt.add(fromServer);
-                                    SocketController.getInstance().setHasMsgs(true);
                                 }
-
                             }
                             SocketController.getInstance().processMessage();
                             sleep(10);
@@ -160,7 +177,6 @@ public class MessengerTcpSocket extends Thread{
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        boolean test = true;
                     }
                 }
             if (m_socket != null) {

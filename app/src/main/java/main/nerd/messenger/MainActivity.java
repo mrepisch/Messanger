@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         if( a_ip.length() > 0) {
             ipAdressText.setText(a_ip);
         }
-
+        Log.w("On Create","1");
         Button ipChangeButton = (Button) findViewById(R.id.ipbtn);
         ipChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,11 +76,12 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         MainActivity.this.startActivity(a_registerActivity);
     }
 
-    public void enableButtons() {
+    public void enableButtons(boolean t_enable) {
         Button loginBtn = (Button) findViewById(R.id.loginbtn);
         Button registerBtn = (Button) findViewById(R.id.registerbtn);
-        loginBtn.setEnabled(true);
-        registerBtn.setEnabled(true);
+
+        loginBtn.setEnabled(t_enable);
+        registerBtn.setEnabled(t_enable);
     }
 
     public void setIp(String ipAdress) {
@@ -183,5 +184,18 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
             return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.w("BLUBB","");
+        if( SocketController.getInstance().getSocket() != null) {
+            if (SocketController.getInstance().getSocket().getIsConnected()) {
+                enableButtons(true);
+            } else {
+                enableButtons(false);
+            }
+        }
     }
 }

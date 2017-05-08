@@ -186,7 +186,9 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         super.onDestroy();
         Log.w("DESTRY CHAT LIST ACTIVITY","TRUE");
         m_keepUpdating = false;
+        SocketController.getInstance().getSocket().closeConnection();
         SocketController.getInstance().removeMessageReader(getName());
+
     }
 
     @Override
