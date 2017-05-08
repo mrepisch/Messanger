@@ -1,8 +1,5 @@
 package main.nerd.messenger;
 
-import android.app.ActivityManager;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import main.nerd.messenger.main.nerd.messenger.chat.ChatModel;

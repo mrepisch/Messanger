@@ -1,12 +1,7 @@
 package main.nerd.messenger.main.nerd.messenger.chat;
 
 import android.icu.text.DateFormat;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 

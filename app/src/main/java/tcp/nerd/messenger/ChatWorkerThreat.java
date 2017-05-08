@@ -1,7 +1,5 @@
 package tcp.nerd.messenger;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 import main.nerd.messenger.SocketController;

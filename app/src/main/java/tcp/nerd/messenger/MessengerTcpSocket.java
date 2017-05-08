@@ -2,12 +2,9 @@ package tcp.nerd.messenger;
 
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -32,8 +29,6 @@ public class MessengerTcpSocket extends Thread{
     private static int S_SERVERPORT = 6996;
 
     private Socket m_socket;
-
-
 
     private BufferedReader m_reader;
 
