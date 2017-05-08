@@ -26,7 +26,7 @@ public class SocketController {
 
     private String m_userName;
 
-    private ArrayList<ChatModel>m_chatModels;
+    private ArrayList<ChatModel>m_chatModels = new ArrayList<ChatModel>();
 
     private ArrayList<TcpMessageReader>m_activitys = new ArrayList<TcpMessageReader>();
 

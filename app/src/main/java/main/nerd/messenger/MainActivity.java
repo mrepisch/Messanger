@@ -169,4 +169,10 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     public String getName() {
         return "main";
     }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+        SocketController.getInstance().removeMessageReader(getName());
+    }
 }
