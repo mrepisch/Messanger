@@ -95,6 +95,11 @@ public class MessengerTcpSocket extends Thread{
         }
     }
 
+    public synchronized void addMessage(String t_message)
+    {
+        m_receivt.add(t_message);
+    }
+
     public synchronized  void sendMessage(String t_msg)
     {
         m_messagesToSend.add(t_msg);
