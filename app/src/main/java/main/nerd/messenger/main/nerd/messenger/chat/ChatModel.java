@@ -27,12 +27,12 @@ public class ChatModel {
     }
 
 
-    public  synchronized   void addMessages(String t_message, String t_from)
+    public  synchronized   void addMessages(String t_message, String t_from,String time)
     {
         m_hasChanges = true;
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-        m_messanges.add(new MessageModel(t_from, t_message, currentDateTimeString ));
+
+        m_messanges.add(new MessageModel(t_from, t_message, time ));
     }
 
     public ArrayList<MessageModel>getMessages()
