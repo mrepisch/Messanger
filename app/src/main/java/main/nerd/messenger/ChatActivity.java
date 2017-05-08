@@ -86,7 +86,6 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
                     if (a_msg.contains("Message")) {
                         a_msgToDelete = a_msg;
                         String[] a_split = a_msg.split(":");
-                        Log.w("DBG",a_split[2]);
                         if( a_split.length >= 3)
                         {
                             if( m_model != null)
