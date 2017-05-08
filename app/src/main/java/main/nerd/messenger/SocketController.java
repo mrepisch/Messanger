@@ -81,12 +81,12 @@ public class SocketController {
         }
     }
 
-    public void addTcMessageReader(TcpMessageReader t_reader)
+    public synchronized void addTcMessageReader(TcpMessageReader t_reader)
     {
         m_activitys.add(t_reader);
     }
 
-    public void removeMessageReader(String name)
+    public synchronized void removeMessageReader(String name)
     {
         for( int i = 0; i < m_activitys.size(); i++)
         {

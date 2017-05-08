@@ -55,8 +55,6 @@ public class ChatActivity extends FragmentActivity {
             }
         }.start();
         loadChat();
-
-
     }
 
     void loadChat()
