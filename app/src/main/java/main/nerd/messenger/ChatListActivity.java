@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -115,13 +116,14 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     }
 
     @Override
-    public void readMessages(final ArrayList<String> t_messages) {
+    public synchronized void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                String a_msgToDelete = null;
                 for( String a_msg: t_messages)
                 {
-                    String a_msgToDelete = null;
+
                     if (a_msg.contains("Contact:search_for_userID:")) {
 
                         a_msgToDelete = a_msg;
@@ -163,9 +165,11 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                         }
                             a_msgToDelete = a_msg;
                         }
-                    SocketController.getInstance().removeMsg(a_msgToDelete);
+
                     }
+                SocketController.getInstance().removeMsg(a_msgToDelete);
                 }
+
 
         });
 
@@ -180,6 +184,20 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     public void onDestroy()
     {
         super.onDestroy();
+        Log.w("DESTRY CHAT LIST ACTIVITY","TRUE");
+        m_keepUpdating = false;
         SocketController.getInstance().removeMessageReader(getName());
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Log.w("KLICK ON BACK","TRUE");
+            this.finish();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

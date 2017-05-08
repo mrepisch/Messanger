@@ -105,7 +105,7 @@ public class MessengerTcpSocket extends Thread{
         return m_receivt;
     }
 
-    public void closeConnection()
+    public synchronized void closeConnection()
     {
         try {
             m_socket.close();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     }
 
     @Override
-    public void readMessages(final ArrayList<String> t_messages) {
+    public synchronized void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -161,6 +162,25 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     public void onDestroy()
     {
         super.onDestroy();
+        Log.w("DESTROY MAINACTIVITY","TRUE");
+        SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
+
         SocketController.getInstance().removeMessageReader(getName());
+        SocketController.getInstance().getSocket().closeConnection();
+        System.exit(0);
+    }
+
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            Log.w("KLICK ON BACK","TRUE");
+            finish();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
