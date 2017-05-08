@@ -30,13 +30,16 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         Button a_sendBtn = (Button)findViewById(R.id.send);
         a_sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String a_msgStr = a_msg.getText().toString().replace("\n","");
+                final String a_msgStr = a_msg.getText().toString().replace("\n","");
                 SocketController.getInstance().getSocket().sendMessage("Message:"+ SocketController.getInstance().getuserName()+":"+
                         m_model.getUserNameTo()+":"+a_msgStr );
-                SocketController.getInstance().getSocket().addMessage("Message:"+   m_model.getUserNameTo()+":"+
-                        SocketController.getInstance().getuserName()+":"+a_msgStr );
-                //m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
-                //a_msg.setText("");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
+                        a_msg.setText("");                    }
+                });
+
             }
         });
         new Thread()
