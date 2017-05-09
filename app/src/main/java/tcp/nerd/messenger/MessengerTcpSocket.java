@@ -175,10 +175,11 @@ public class MessengerTcpSocket extends Thread{
                 if (m_socket != null && m_socket.isConnected()) {
 
                         for (int i = 0; i < m_messagesToSend.size(); i++) {
+                            String a_msg = m_messagesToSend.get(i);
                             m_writer.println(m_messagesToSend.get(i) + "\n");
                             m_writer.flush();
-                            m_messagesToSend.clear();
                         }
+                        m_messagesToSend.clear();
 
                         try {
                             if( m_socket.isConnected() ) {
