@@ -26,7 +26,7 @@ public class MessengerTcpSocket extends Thread{
 
     private static String S_SERVERIP = "172.0.0.1";
     //private static String S_SERVERIP = "10.0.2.2";
-    private static int S_SERVERPORT = 6969;
+    private static int S_SERVERPORT = 6699;
 
     private Socket m_socket;
 
