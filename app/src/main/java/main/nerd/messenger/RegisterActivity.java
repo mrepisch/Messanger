@@ -28,12 +28,12 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
         final TextView a_username = (TextView) findViewById(R.id.username);
         final TextView a_password = (TextView) findViewById(R.id.password);
         final TextView a_paswordRepeat = (TextView) findViewById(R.id.passwordRepeat);
-        final TextView a_error = (TextView)findViewById(R.id.errors);
+        final TextView a_error = (TextView) findViewById(R.id.errors);
         Button a_registerBtn = (Button) findViewById(R.id.registerbtn);
         SocketController.getInstance().addTcMessageReader(this);
         a_registerBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if( !a_username.getText().toString().isEmpty() && !a_password.getText().toString().isEmpty() && !a_paswordRepeat.getText().toString().isEmpty()) {
+                if (!a_username.getText().toString().isEmpty() && !a_password.getText().toString().isEmpty() && !a_paswordRepeat.getText().toString().isEmpty()) {
                     if (a_password.getText().toString().equals(a_paswordRepeat.getText().toString())) {
                         SocketController.getInstance().getSocket().sendMessage("Register:" + a_username.getText() + ":" + a_password.getText());
                     } else {
@@ -48,10 +48,8 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
     /**
      * Starts the Login Activity for when the registration was successful
      */
-
-    private void startLoginActivity()
-    {
-        Intent a_contactListActivity = new Intent( RegisterActivity.this,MainActivity.class );
+    private void startLoginActivity() {
+        Intent a_contactListActivity = new Intent(RegisterActivity.this, MainActivity.class);
         finish();
         RegisterActivity.this.startActivity(a_contactListActivity);
     }
@@ -59,10 +57,8 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
     /**
      * Reads Messages from TCP
      * Starts functions based on Message content
-     *
      * @param t_messages Array of messages
      */
-
     @Override
     public void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
@@ -70,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
             public void run() {
 
                 String a_msgToDelete = null;
-                final TextView a_error = (TextView)findViewById(R.id.errors);
+                final TextView a_error = (TextView) findViewById(R.id.errors);
                 for (String a_msg : t_messages) {
                     if (a_msg.contains("Register:succes")) {
                         a_msgToDelete = a_msg;
@@ -88,7 +84,6 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
 
     /**
      * Returns name for TcpMessageReader interface
-     *
      * @return "register" which is the name of this Activity
      */
     @Override
@@ -101,8 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
      * Removes messageReader from SocketController
      */
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         SocketController.getInstance().removeMessageReader(getName());
     }

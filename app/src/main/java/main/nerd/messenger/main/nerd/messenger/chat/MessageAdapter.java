@@ -20,10 +20,23 @@ import main.nerd.messenger.SocketController;
  */
 
 public class MessageAdapter extends ArrayAdapter<MessageModel> {
+
+    /**
+     * Constructor
+     * @param context
+     * @param t_data, the data to add
+     */
     public MessageAdapter(@NonNull Context context, ArrayList<MessageModel>t_data) {
         super(context, 0, t_data);
     }
 
+    /**
+     * NO FUCKING CLUE HOW THAT SHIT REALLY WORKS
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
@@ -45,8 +58,6 @@ public class MessageAdapter extends ArrayAdapter<MessageModel> {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.left, parent, false);
                 TextView a_msg = (TextView) convertView.findViewById(R.id.msgl);
                 a_msg.setText(a_message.getMessage());
-
-
             }
 
         }
