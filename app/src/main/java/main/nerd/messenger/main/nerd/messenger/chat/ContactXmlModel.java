@@ -96,7 +96,7 @@ public class ContactXmlModel {
     }
 
     /**
-     * Getter for m_userID
+     * Getter for the userID variable
      * @return m_userID
      */
     public String getUserID()
@@ -108,8 +108,8 @@ public class ContactXmlModel {
     /**
      * Writes a new xml contact file
      * @param t_activity activity
-     * @param t_model, arraylist with the model data
-     * @param t_userName, username which owns the contacts
+     * @param t_model
+     * @param t_userName
      */
     public static void writeNewContact( ChatListActivity t_activity, ArrayList<ContactXmlModel>t_model, String t_userName)
     {
@@ -165,8 +165,8 @@ public class ContactXmlModel {
     /**
      * Reads the xml contact file
      * @param t_activity
-     * @param t_userName, username which needs the get his contacts loadet
-     * @return ArrayList<ContactXmlModel>with the model data
+     * @param t_userName
+     * @return
      */
     public static ArrayList<ContactXmlModel> readContactXml(ChatListActivity t_activity, String t_userName)
     {

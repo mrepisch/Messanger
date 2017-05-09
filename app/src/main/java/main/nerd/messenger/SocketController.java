@@ -3,6 +3,7 @@ package main.nerd.messenger;
 import java.util.ArrayList;
 
 import main.nerd.messenger.main.nerd.messenger.chat.ChatModel;
+import tcp.nerd.messenger.ChatWorkerThreat;
 import tcp.nerd.messenger.MessengerTcpSocket;
 
 /**
@@ -14,19 +15,20 @@ public class SocketController {
 
     private MessengerTcpSocket m_socket;
 
+    private ChatWorkerThreat m_chatWorker = new ChatWorkerThreat();
+
     private boolean m_hasMessages = false;
 
     private String m_userID;
 
     private String m_userName;
 
-    private ArrayList<ChatModel> m_chatModels = new ArrayList<ChatModel>();
+    private ArrayList<ChatModel>m_chatModels = new ArrayList<ChatModel>();
 
-    private ArrayList<TcpMessageReader> m_activitys = new ArrayList<TcpMessageReader>();
+    private ArrayList<TcpMessageReader>m_activitys = new ArrayList<TcpMessageReader>();
 
     /**
      * Singleton method to return the instance
-     *
      * @return instance
      */
     public static SocketController getInstance() {
@@ -41,74 +43,73 @@ public class SocketController {
 
     /**
      * Setter for m_userName
-     *
      * @param t_username username to be set
      */
-    public void setUserName(String t_username) {
+    public void setUserName( String t_username){
         m_userName = t_username;
     }
 
     /**
      * Getter for m_userName
-     *
      * @return m_userName variable
      */
-    public String getuserName() {
+    public String getuserName()
+    {
         return m_userName;
     }
 
     /**
      * Getter for messages in socket
-     *
      * @return arrayList of messages
      */
-    public synchronized ArrayList<String> getReceivtMessages() {
+    public synchronized ArrayList<String> getReceivtMessages()
+    {
         return m_socket.getReceivedList();
     }
 
     /**
      * Setter for m_hasMessages
-     *
      * @param t_hasMessages boolean to be set
      */
-    public synchronized void setHasMsgs(boolean t_hasMessages) {
+    public synchronized void setHasMsgs(boolean t_hasMessages)
+    {
         m_hasMessages = t_hasMessages;
     }
 
     /**
      * Getter for m_hasMessages
-     *
      * @return m_hasMessages
      */
-    public synchronized boolean gethasMsgs() {
+    public synchronized boolean gethasMsgs()
+    {
         return m_hasMessages;
     }
 
     /**
      * Getter for m_socket
-     *
      * @return socket m_socket
      */
-    public synchronized MessengerTcpSocket getSocket() {
+    public synchronized  MessengerTcpSocket getSocket()
+    {
         return m_socket;
     }
 
     /**
      * Setter for m_UserID
-     *
      * @param t_userID userID to be set
      */
-    public synchronized void setUserID(String t_userID) {
+    public synchronized void setUserID(String t_userID)
+    {
         m_userID = t_userID;
     }
 
     /**
      * Removes message from received ones
-     *
      * @param t_msg the message that has to be deleted
      */
-    public void removeMsg(String t_msg) {
-        if (t_msg != null) {
+    public void removeMsg(String t_msg)
+    {
+        if( t_msg != null) {
 
 
             for (int i = 0; i < m_socket.getReceivedList().size(); i++) {
@@ -121,21 +122,23 @@ public class SocketController {
 
     /**
      * Adds {@link TcpMessageReader} to the activities
-     *
      * @param t_reader the reader to be added
      */
-    public synchronized void addTcMessageReader(TcpMessageReader t_reader) {
+    public synchronized void addTcMessageReader(TcpMessageReader t_reader)
+    {
         m_activitys.add(t_reader);
     }
 
     /**
      * Removes {@link TcpMessageReader} from activity
-     *
      * @param name of the activity from which the messageReader has to be removed
      */
-    public synchronized void removeMessageReader(String name) {
-        for (int i = 0; i < m_activitys.size(); i++) {
-            if (m_activitys.get(i).getName().equals(name)) {
+    public synchronized void removeMessageReader(String name)
+    {
+        for( int i = 0; i < m_activitys.size(); i++)
+        {
+            if( m_activitys.get(i).getName().equals(name))
+            {
                 m_activitys.remove(i);
             }
         }
@@ -144,9 +147,11 @@ public class SocketController {
     /**
      * Processes the messages
      */
-    public synchronized void processMessage() {
-        for (int i = 0; i < m_activitys.size(); i++) {
-            if (m_activitys.get(i) != null) {
+    public synchronized void processMessage()
+    {
+        for( int i = 0; i < m_activitys.size(); i++)
+        {
+            if( m_activitys.get(i) != null) {
                 m_activitys.get(i).readMessages(m_socket.getReceivedList());
             }
         }
@@ -154,11 +159,11 @@ public class SocketController {
 
     /**
      * Sets the Ip and starts the socket
-     *
-     * @param t_ip       ip to be set
+     * @param t_ip ip to be set
      * @param t_activity activity to which the socket has to be added
      */
-    public synchronized void setIpAndStartSocket(String t_ip, MainActivity t_activity) {
+    public synchronized void setIpAndStartSocket(String t_ip,MainActivity t_activity)
+    {
         m_socket = new MessengerTcpSocket(t_activity);
         m_socket.start();
         m_socket.setIpAndConnect(t_ip);
@@ -172,8 +177,10 @@ public class SocketController {
      */
     public synchronized ChatModel getChat(String a_userName) {
         ChatModel r_mode = null;
-        for (int i = 0; i < m_chatModels.size(); i++) {
-            if (m_chatModels.get(i).getUserNameTo().equals(a_userName)) {
+        for( int i = 0; i < m_chatModels.size(); i++)
+        {
+            if( m_chatModels.get(i).getUserNameTo().equals(a_userName))
+            {
                 r_mode = m_chatModels.get(i);
             }
         }
@@ -189,7 +196,8 @@ public class SocketController {
     }
 
     public boolean getHasChatAllready(String userName) {
-        if (getChat(userName) == null) {
+        if( getChat(userName) == null)
+        {
             return false;
         }
         return true;
@@ -200,8 +208,10 @@ public class SocketController {
      * @param userName userName of the Chat that has to be removed
      */
     public void removeChat(String userName) {
-        for (int i = 0; i < m_chatModels.size(); i++) {
-            if (m_chatModels.get(i).getUserNameTo().equals(userName)) {
+        for( int i = 0; i < m_chatModels.size(); i++)
+        {
+            if( m_chatModels.get(i).getUserNameTo().equals(userName))
+            {
                 m_chatModels.remove(i);
             }
         }

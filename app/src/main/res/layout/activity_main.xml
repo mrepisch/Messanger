@@ -27,7 +27,7 @@
             android:id="@+id/ipbtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verbinden" />
+            android:text="IP setzen" />
 
         <TextView
             android:id="@+id/textView7"

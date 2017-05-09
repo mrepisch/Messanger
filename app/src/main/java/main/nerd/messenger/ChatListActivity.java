@@ -20,27 +20,20 @@ import main.nerd.messenger.main.nerd.messenger.chat.ContactAvaiableAdapter;
 import main.nerd.messenger.main.nerd.messenger.chat.ContactXmlModel;
 
 
-public class ChatListActivity extends AppCompatActivity implements TcpMessageReader {
+public class ChatListActivity extends AppCompatActivity implements TcpMessageReader{
 
-    private ArrayList<ContactXmlModel> m_contacts = new ArrayList<ContactXmlModel>();
+    private ArrayList<ContactXmlModel>m_contacts  = new ArrayList<ContactXmlModel>();
     private boolean m_keepUpdating = true;
 
-
-    /**
-     * On create function is called as soon as the activity is started
-     * Updates ChatList
-     * Adds onClickListener for when a contact is searched
-     *
-     * @param savedInstanceState
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatlist);
 
+
         SocketController.getInstance().addTcMessageReader(this);
         Button a_searchBtn = (Button) findViewById(R.id.searchbtn);
-        final EditText a_userNameToSearch = (EditText) findViewById(R.id.searchPerson);
+        final EditText a_userNameToSearch = (EditText)findViewById(R.id.searchPerson);
         readContactList();
         a_searchBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -54,63 +47,58 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     }
 
-    /**
-     * Reads xml files on phone to create according contact entries
-     */
-    public void readContactList() {
-        m_contacts = ContactXmlModel.readContactXml(this, SocketController.getInstance().getuserName());
-        for (int i = 0; i < m_contacts.size(); i++) {
+    public void readContactList()
+    {
+        m_contacts = ContactXmlModel.readContactXml(this,SocketController.getInstance().getuserName());
+        for( int i = 0; i < m_contacts.size(); i++) {
             SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:" + m_contacts.get(i).getUserName());
         }
         updateContactList();
     }
 
-    /**
-     * Updates the contact list
-     */
-    private void updateContactList() {
+
+    private void updateContactList()
+    {
         ContactAvaiableAdapter adapter = new ContactAvaiableAdapter(ChatListActivity.this, m_contacts);
         ListView listView = (ListView) findViewById(R.id.contactList);
         listView.setAdapter(adapter);
     }
 
-    /**
-     * Adds user to contact list
-     * Creates xml file for that contact with ContactXmlModel
-     *
-     * @param t_model the model with which the user is added
-     */
-    public void addUser(ContactXmlModel t_model) {
-        if (t_model != null) {
+    private void addContactToList(ContactXmlModel t_model)
+    {
+
+        m_contacts.add(t_model);
+        ContactXmlModel.writeNewContact(this,m_contacts, SocketController.getInstance().getuserName());
+    }
+
+    public void addUser(ContactXmlModel t_model)
+    {
+        if( t_model !=null )
+        {
             m_contacts.add(t_model);
-            ContactXmlModel.writeNewContact(this, m_contacts, SocketController.getInstance().getuserName());
+            ContactXmlModel.writeNewContact(this,m_contacts,SocketController.getInstance().getuserName());
             updateContactList();
         }
     }
 
-    /**
-     * Removes user from contacts
-     * This is done by deleting the xml file
-     *
-     * @param userName the username of the user that has to be deleted
-     */
-    public void removeUser(String userName) {
-        for (int i = 0; i < m_contacts.size(); i++) {
-            if (m_contacts.get(i).getUserName().equals(userName)) {
+    public void removeUser(String userName)
+    {
+        for( int i= 0; i < m_contacts.size(); i++)
+        {
+            if( m_contacts.get(i).getUserName().equals(userName)){
                 m_contacts.remove(i);
             }
         }
-        ContactXmlModel.writeNewContact(this, m_contacts, SocketController.getInstance().getuserName());
+        ContactXmlModel.writeNewContact(this,m_contacts, SocketController.getInstance().getuserName());
         updateContactList();
     }
 
-    /**
-     * Keeps updating the contact list
-     */
-    private void keepUpdated() {
-        new Thread() {
-            public void run() {
-                while (m_keepUpdating) {
+    private void keepUpdated(){
+        new Thread()
+        {
+            public void run()
+            {
+                while( m_keepUpdating ) {
                     try {
                         sleep(500);
                         for (int i = 0; i < m_contacts.size(); i++) {
@@ -120,25 +108,19 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                         e.printStackTrace();
                     }
                 }
+
             }
         }.start();
     }
 
-
-    /**
-     * Reads Messages from TCP
-     * Starts functions based on Message content
-     * Shows users based on search/messgae
-     *
-     * @param t_messages Array of messages
-     */
     @Override
     public synchronized void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String a_msgToDelete = null;
-                for (String a_msg : t_messages) {
+                for( String a_msg: t_messages)
+                {
 
                     if (a_msg.contains("Contact:search_for_userID:")) {
 
@@ -146,10 +128,10 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                         String[] a_split = a_msg.split(":");
                         if (a_split.length >= 4) {
                             String a_userName = a_split[2];
-                            for (int i = 0; i < m_contacts.size(); i++) {
+                            for( int i = 0; i < m_contacts.size(); i++) {
                                 //m_contacts.get(i).setUserID(a_split[2]);
                                 ContactXmlModel a_model = m_contacts.get(i);
-                                if (a_model.getUserName().equals(a_userName)) {
+                                if( a_model.getUserName().equals(a_userName)) {
                                     if (a_split[4].equals("online")) {
                                         m_contacts.get(i).setIsOnline(true);
                                     } else {
@@ -179,48 +161,41 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                             listView.setAdapter(adapter);
 
                         }
-                        a_msgToDelete = a_msg;
-                    }
+                            a_msgToDelete = a_msg;
+                        }
 
-                }
+                    }
                 SocketController.getInstance().removeMsg(a_msgToDelete);
-            }
+                }
+
+
         });
+
     }
 
-    /**
-     * Returns name for TcpMessageReader interface
-     *
-     * @return "chatlist" which is the name of this Activity
-     */
     @Override
     public String getName() {
         return "chatlist";
     }
 
-    /**
-     * Removes messageReader from SocketController
-     */
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
-        Log.w("DESTRY CHAT LIST ACTIVITY", "TRUE");
+        Log.w("DESTRY CHAT LIST ACTIVITY","TRUE");
         m_keepUpdating = false;
         SocketController.getInstance().getSocket().closeConnection();
         SocketController.getInstance().removeMessageReader(getName());
 
     }
 
-    /**
-     * On Key down Function for handling the backbutton even
-     * @param keyCode
-     * @param event
-     * @return
-     */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            SocketController.getInstance().getSocket().sendMessage("Disconnect:" + SocketController.getInstance().getuserName());
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
+            Log.w("KLICK ON BACK","TRUE");
             this.finish();
             return false;
         }
