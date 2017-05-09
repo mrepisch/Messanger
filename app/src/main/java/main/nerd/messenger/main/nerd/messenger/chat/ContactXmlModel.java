@@ -42,6 +42,9 @@ public class ContactXmlModel {
 
     private boolean m_isOnline;
 
+    /**
+     * Empty base constructor
+     */
     public ContactXmlModel()
     {
 

@@ -20,10 +20,23 @@ import main.nerd.messenger.SocketController;
  */
 
 public class MessageAdapter extends ArrayAdapter<MessageModel> {
+
+    /**
+     * Constructor which calls the super constructor and sets variables there
+     * @param context context for super constructor
+     * @param t_data arrayList for super constructor
+     */
     public MessageAdapter(@NonNull Context context, ArrayList<MessageModel>t_data) {
         super(context, 0, t_data);
     }
 
+    /**
+     * Overridden method to get the View
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position

@@ -23,11 +23,24 @@ public class ContactAdapter extends ArrayAdapter<ContactXmlModel> {
 
     private ChatListActivity m_activity;
 
+    /**
+     * Constructor to set variables
+     * @param t_activity activity to be set on m_activity
+     * @param context context needed to call super constructor
+     * @param t_data data needed to call super constructor
+     */
     public ContactAdapter(ChatListActivity t_activity, @NonNull Context context, ArrayList<ContactXmlModel>t_data) {
         super(context, 0, t_data);
         m_activity = t_activity;
     }
 
+    /**
+     * Overridden method to get the View
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
