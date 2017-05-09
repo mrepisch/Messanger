@@ -80,6 +80,24 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     }
 
     /**
+     * Function to check if a username is allready in the contactlist
+     * @param t_username
+     * @return
+     */
+    private boolean checkIfAlreadyInList(String t_username)
+    {
+        boolean r_isFound = false;
+        for(ContactXmlModel a_model : m_contacts)
+        {
+            if( a_model.getUserName() == t_username)
+            {
+                r_isFound = true;
+            }
+        }
+        return r_isFound;
+    }
+
+    /**
      * Adds user to contact list
      * Creates xml file for that contact with ContactXmlModel
      * @param t_model the model with which the user is added
@@ -88,9 +106,11 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     {
         if( t_model !=null )
         {
-            m_contacts.add(t_model);
-            ContactXmlModel.writeNewContact(this,m_contacts,SocketController.getInstance().getuserName());
-            updateContactList();
+            if( !checkIfAlreadyInList(t_model.getUserName())) {
+                m_contacts.add(t_model);
+                ContactXmlModel.writeNewContact(this, m_contacts, SocketController.getInstance().getuserName());
+                updateContactList();
+            }
             m_state = 0;
         }
     }
@@ -237,9 +257,16 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
+
             Log.w("KLICK ON BACK","TRUE");
-            this.finish();
+            if(m_state == 1)
+            {
+                m_state = 0;
+            }
+            else {
+                SocketController.getInstance().getSocket().sendMessage("Disconnect:"+SocketController.getInstance().getuserName());
+                this.finish();
+            }
             return false;
         }
         return super.onKeyDown(keyCode, event);
