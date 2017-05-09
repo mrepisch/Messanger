@@ -3,7 +3,6 @@ package main.nerd.messenger;
 import java.util.ArrayList;
 
 import main.nerd.messenger.main.nerd.messenger.chat.ChatModel;
-import tcp.nerd.messenger.ChatWorkerThreat;
 import tcp.nerd.messenger.MessengerTcpSocket;
 
 /**
@@ -14,8 +13,6 @@ public class SocketController {
     private static final SocketController ourInstance = new SocketController();
 
     private MessengerTcpSocket m_socket;
-
-    private ChatWorkerThreat m_chatWorker = new ChatWorkerThreat();
 
     private boolean m_hasMessages = false;
 

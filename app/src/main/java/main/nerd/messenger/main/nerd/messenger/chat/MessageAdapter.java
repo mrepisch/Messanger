@@ -28,7 +28,11 @@ public class MessageAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater m_inflater;
 
-
+    /**
+     * Constructor which calls the super constructor and sets variables there
+     * @param context context for super constructor
+     * @param t_data arrayList for super constructor
+     */
     public MessageAdapter(@NonNull Context context, ArrayList<MessageModel> t_data) {
 
         this.context = context;
@@ -37,28 +41,51 @@ public class MessageAdapter extends BaseAdapter {
         m_inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-
-
+    /**
+     *  Sets and swaps items
+     * @param items list of items
+     */
     public void swapItems(List<MessageModel> items) {
         this.items = items;
         notifyDataSetChanged();
     }
 
+    /**
+     * Overriden method that returns items size
+     * @return items.size()
+     */
     @Override
     public int getCount() {
         return items.size();
     }
 
+    /**
+     * Getter for item
+     * @param position position of item
+     * @return returns item at given position
+     */
     @Override
     public Object getItem(int position) {
         return items.get(position);
     }
 
+    /**
+     * Getter for itemiD
+     * @param position itemID
+     * @return itemID
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
 
+    /**
+     * Overridden method to get the View
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

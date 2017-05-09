@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
      * On create function is called as soon as the activity is started
      * Starts onclickListener for login and registration button and checks the filled out field for correctness
      * Logs you in or registers you if correct, displays error message if not
-     *
      * @param savedInstanceState
      */
     @Override
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
      * Reads Messages from TCP
      * Starts functions based on Message content
      * Logs user in if message for that is received
-     *
      * @param t_messages Array of messages
      */
     @Override
@@ -193,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
 
     /**
      * Returns name for TcpMessageReader interface
-     *
      * @return "main" which is the name of this Activity
      */
     @Override

@@ -22,6 +22,12 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
     ListView listView;
     MessageAdapter adapter;
 
+    /**
+     * On create function is called as soon as the activity is started
+     * Starts onclickListener for send button
+     * Sends message to server
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +79,9 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         loadChat();
     }
 
+    /**
+     * Loads chat from adapter
+     */
     private synchronized void loadChat()
     {
         Log.w("FUNCTION CALL","LOAD CHAT");
@@ -87,6 +96,12 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         }
     }
 
+    /**
+     * Reads Messages from TCP
+     * Starts functions based on Message content
+     * Displays received messages
+     * @param t_messages Array of messages
+     */
     @Override
     public void readMessages(final ArrayList<String> t_messages) {
         runOnUiThread(new Runnable() {
@@ -122,11 +137,19 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
 
     }
 
+    /**
+     * Returns name for TcpMessageReader interface
+     * @return "chat" which is the name of this Activity
+     */
     @Override
     public String getName() {
         return "chat";
     }
 
+    /**
+     * Removes messageReader from SocketController
+     */
+    @Override
     public void onDestroy()
     {
         super.onDestroy();

@@ -10,7 +10,6 @@ public interface TcpMessageReader {
 
     /**
      * Gets messages and calls functions based on them
-     *
      * @param t_messages arrayList of messages
      */
     public void readMessages(ArrayList<String> t_messages);
