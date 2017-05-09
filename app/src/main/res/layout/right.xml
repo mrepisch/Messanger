@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/space10"
             android:text="Sampletext"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/h3"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
