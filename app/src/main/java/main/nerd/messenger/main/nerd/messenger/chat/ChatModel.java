@@ -1,6 +1,7 @@
 package main.nerd.messenger.main.nerd.messenger.chat;
 
 import android.icu.text.DateFormat;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,9 +30,8 @@ public class ChatModel {
 
     public  synchronized   void addMessages(String t_message, String t_from)
     {
+        Log.w("adding messag to list",t_message);
         m_hasChanges = true;
-
-
         m_messanges.add(new MessageModel(t_from, t_message ));
     }
 

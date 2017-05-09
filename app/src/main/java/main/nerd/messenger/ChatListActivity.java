@@ -50,7 +50,6 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     public void readContactList()
     {
         m_contacts = ContactXmlModel.readContactXml(this,SocketController.getInstance().getuserName());
-        Log.w("AMOUNT OF CONTACTS",String.valueOf(m_contacts.size()));
         for( int i = 0; i < m_contacts.size(); i++) {
             SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:" + m_contacts.get(i).getUserName());
         }
@@ -60,7 +59,6 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     private void updateContactList()
     {
-        Log.w("TEST","UPDATE KONTAKT LIST");
         ContactAvaiableAdapter adapter = new ContactAvaiableAdapter(ChatListActivity.this, m_contacts);
         ListView listView = (ListView) findViewById(R.id.contactList);
         listView.setAdapter(adapter);
