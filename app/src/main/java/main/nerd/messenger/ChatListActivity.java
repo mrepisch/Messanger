@@ -24,6 +24,9 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     private ArrayList<ContactXmlModel>m_contacts  = new ArrayList<ContactXmlModel>();
     private boolean m_keepUpdating = true;
+    //Status 0 = in kontakliste
+    //Status 1 = in gefunde Benutzerliste.
+    private int m_state = 0;
 
     /**
      * On create function is called as soon as the activity is started
@@ -45,6 +48,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
             public void onClick(View v) {
                 if (!a_userNameToSearch.getText().toString().isEmpty()) {
                     SocketController.getInstance().getSocket().sendMessage("Contact:search_for_username:" + a_userNameToSearch.getText().toString());
+                    m_state = 1;
 
                 }
             }
@@ -87,6 +91,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
             m_contacts.add(t_model);
             ContactXmlModel.writeNewContact(this,m_contacts,SocketController.getInstance().getuserName());
             updateContactList();
+            m_state = 0;
         }
     }
 
@@ -107,6 +112,8 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         updateContactList();
     }
 
+
+
     /**
      * Keeps updating the contact list
      */
@@ -119,7 +126,9 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                     try {
                         sleep(500);
                         for (int i = 0; i < m_contacts.size(); i++) {
-                            SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:" + m_contacts.get(i).getUserName());
+                            if( m_state == 0) {
+                                SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:" + m_contacts.get(i).getUserName());
+                            }
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -145,7 +154,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                 for( String a_msg: t_messages)
                 {
 
-                    if (a_msg.contains("Contact:search_for_userID:")) {
+                    if (a_msg.contains("Contact:search_for_userID:") && m_state == 0) {
 
                         a_msgToDelete = a_msg;
                         String[] a_split = a_msg.split(":");
@@ -165,7 +174,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                             }
                         }
                     }
-                    if (a_msg.contains("Contact:users;")) {
+                    if (a_msg.contains("Contact:users;") && m_state == 1) {
                         String[] a_userSplit = a_msg.split(";");
                         ArrayList<ContactXmlModel> a_foundUsers = new ArrayList<ContactXmlModel>();
                         if (a_userSplit.length > 1) {
