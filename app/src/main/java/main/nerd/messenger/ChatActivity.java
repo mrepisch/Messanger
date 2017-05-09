@@ -19,34 +19,41 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
 
     private  ChatModel m_model = null;
     private boolean m_keepUpdating = true;
+
+    /**
+     * On create function is called as soon as the activity is started
+     * Starts onclickListener for send button
+     * Sends message to server
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         String a_userName = getIntent().getStringExtra("username");
         m_model = SocketController.getInstance().getChat(a_userName);
-        final EditText a_msg = (EditText)findViewById(R.id.msg);
+        final EditText a_msg = (EditText) findViewById(R.id.msg);
         SocketController.getInstance().addTcMessageReader(this);
-        Button a_sendBtn = (Button)findViewById(R.id.send);
+        Button a_sendBtn = (Button) findViewById(R.id.send);
         a_sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final String a_msgStr = a_msg.getText().toString().replace("\n","");
-                SocketController.getInstance().getSocket().sendMessage("Message:"+ SocketController.getInstance().getuserName()+":"+
-                        m_model.getUserNameTo()+":"+a_msgStr );
+                final String a_msgStr = a_msg.getText().toString().replace("\n", "");
+                SocketController.getInstance().getSocket().sendMessage("Message:" + SocketController.getInstance().getuserName() + ":" +
+                        m_model.getUserNameTo() + ":" + a_msgStr);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
-                        a_msg.setText("");                    }
+                        m_model.addMessages(a_msgStr, SocketController.getInstance().getuserName());
+                        a_msg.setText("");
+                    }
                 });
 
             }
         });
-        new Thread()
-        {
-            public void run()
-            {
-                while(m_keepUpdating) {
+        new Thread() {
+            public void run() {
+                while (m_keepUpdating) {
                     try {
                         sleep(5000);
                         ChatActivity.this.runOnUiThread(new Runnable() {
@@ -64,6 +71,9 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         loadChat();
     }
 
+    /**
+     * Loads chat from adapter
+     */
     void loadChat()
     {
         if( m_model != null)
@@ -76,6 +86,13 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         }
     }
 
+    /**
+     * Reads Messages from TCP
+     * Starts functions based on Message content
+     * Displays received messages
+     *
+     * @param t_messages Array of messages
+     */
     @Override
     public void readMessages(final ArrayList<String> t_messages) {
         runOnUiThread(new Runnable() {
@@ -102,6 +119,11 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         });
     }
 
+    /**
+     * Returns name for TcpMessageReader interface
+     *
+     * @return "chat" which is the name of this Activity
+     */
     @Override
     public String getName() {
         return "chat";

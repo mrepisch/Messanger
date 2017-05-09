@@ -25,6 +25,14 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     private ArrayList<ContactXmlModel>m_contacts  = new ArrayList<ContactXmlModel>();
     private boolean m_keepUpdating = true;
 
+
+    /**
+     * On create function is called as soon as the activity is started
+     * Updates ChatList
+     * Adds onClickListener for when a contact is searched
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +55,10 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     }
 
+    /**
+     * Reads xml files on phone to create according contact entries
+     *
+     */
     public void readContactList()
     {
         m_contacts = ContactXmlModel.readContactXml(this,SocketController.getInstance().getuserName());
@@ -57,7 +69,9 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         updateContactList();
     }
 
-
+    /**
+     * Updates the contact list
+     */
     private void updateContactList()
     {
         Log.w("TEST","UPDATE KONTAKT LIST");
@@ -66,13 +80,12 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         listView.setAdapter(adapter);
     }
 
-    private void addContactToList(ContactXmlModel t_model)
-    {
-
-        m_contacts.add(t_model);
-        ContactXmlModel.writeNewContact(this,m_contacts, SocketController.getInstance().getuserName());
-    }
-
+    /**
+     * Adds user to contact list
+     * Creates xml file for that contact with ContactXmlModel
+     *
+     * @param t_model the model with which the user is added
+     */
     public void addUser(ContactXmlModel t_model)
     {
         if( t_model !=null )
@@ -83,6 +96,12 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         }
     }
 
+    /**
+     * Removes user from contacts
+     * This is done by deleting the xml file
+     *
+     * @param userName the username of the user that has to be deleted
+     */
     public void removeUser(String userName)
     {
         for( int i= 0; i < m_contacts.size(); i++)
@@ -95,6 +114,10 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         updateContactList();
     }
 
+    /**
+     * Keeps updating the contact list
+     *
+     */
     private void keepUpdated(){
         new Thread()
         {
@@ -115,6 +138,14 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
         }.start();
     }
 
+
+    /**
+     * Reads Messages from TCP
+     * Starts functions based on Message content
+     * Shows users based on search/messgae
+     *
+     * @param t_messages Array of messages
+     */
     @Override
     public synchronized void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
@@ -175,11 +206,19 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     }
 
+    /**
+     * Returns name for TcpMessageReader interface
+     *
+     * @return "chatlist" which is the name of this Activity
+     */
     @Override
     public String getName() {
         return "chatlist";
     }
 
+    /**
+     * Removes messageReader from SocketController
+     */
     @Override
     public void onDestroy()
     {
@@ -191,6 +230,13 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
 
     }
 
+    /**
+     *
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
