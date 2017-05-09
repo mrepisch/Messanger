@@ -22,7 +22,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TcpMessageReader{
 
-
+    /**
+     * On create function is called as soon as the activity is started
+     * Starts onclickListener for login and registration button and checks the filled out field for correctness
+     * Logs you in or registers you if correct, displays error message if not
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +70,28 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         });
     }
 
+    /**
+     * Starts the contactListActivity when login succeeds
+     */
     private synchronized void startContactListActivity()
     {
         Intent a_contactListActivity = new Intent( MainActivity.this,ChatListActivity.class );
         MainActivity.this.startActivity(a_contactListActivity);
     }
 
+    /**
+     * Starts registerActivity when register button is pressed
+     */
     private void startRegisterActivity()
     {
         Intent a_registerActivity = new Intent( MainActivity.this,RegisterActivity.class );
         MainActivity.this.startActivity(a_registerActivity);
     }
 
+    /**
+     * Enables/disables the login and register buttons based on connection to server
+     * @param t_enable decides if buttons should be enabled or disabled
+     */
     public void enableButtons(boolean t_enable) {
         Button loginBtn = (Button) findViewById(R.id.loginbtn);
         Button registerBtn = (Button) findViewById(R.id.registerbtn);
@@ -84,12 +100,21 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         registerBtn.setEnabled(t_enable);
     }
 
+    /**
+     * Sets ip address based on entered one
+     * @param ipAdress ip address that has to be set
+     */
     public void setIp(String ipAdress) {
 
         ipAdress.replace("\n", "");
         SocketController.getInstance().setIpAndStartSocket(ipAdress,this);
     }
 
+    /**
+     * Gets the Ip from the config.txt file
+     * @param context context
+     * @return ipAddress
+     */
     public String getIpFromConfig(Context context) {
        String ipAdress = "";
         File file = new File(context.getFilesDir(),"config.txt");
@@ -110,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         return ipAdress;
     }
 
+    /**
+     * Writes ip address into config file
+     * @param ipAdress the ip address that has to be saved
+     * @param context context
+     */
     public void writeIntoConfig(String ipAdress, Context context) {
         try {
             File a_file = new File(context.getFilesDir(),"config.txt");
@@ -122,6 +152,13 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         }
     }
 
+    /**
+     * Reads Messages from TCP
+     * Starts functions based on Message content
+     * Logs user in if message for that is received
+     *
+     * @param t_messages Array of messages
+     */
     @Override
     public synchronized void readMessages(final ArrayList<String> t_messages) {
         this.runOnUiThread(new Runnable() {
@@ -154,11 +191,19 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         });
     }
 
+    /**
+     * Returns name for TcpMessageReader interface
+     *
+     * @return "main" which is the name of this Activity
+     */
     @Override
     public String getName() {
         return "main";
     }
 
+    /**
+     * Removes messageReader from SocketController
+     */
     @Override
     public void onDestroy()
     {
@@ -172,7 +217,12 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
     }
 
 
-
+    /**
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -186,6 +236,9 @@ public class MainActivity extends AppCompatActivity implements TcpMessageReader{
         return super.onKeyDown(keyCode, event);
     }
 
+    /**
+     * Enables/disables login/register buttons after restart
+     */
     @Override
     protected void onRestart() {
         super.onRestart();

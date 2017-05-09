@@ -42,43 +42,75 @@ public class ContactXmlModel {
 
     private boolean m_isOnline;
 
+    /**
+     * Empty base constructor
+     */
     public ContactXmlModel()
     {
 
     }
 
+    /**
+     * Setter for the isOnline variable
+     * @param t_isOnline boolean to set
+     */
     public void setIsOnline(boolean t_isOnline)
     {
         m_isOnline = t_isOnline;
     }
 
+    /**
+     * Getter for the isOnline variable
+     * @return m_isOnline
+     */
     public boolean getIsOnline()
     {
         return m_isOnline;
     }
 
+    /**
+     * Setter for the username variable
+     * @param t_username string to set
+     */
     public void setUserName(String t_username)
     {
         m_userName =t_username;
     }
 
+    /**
+     * Getter for the username variable
+     * @return m_userName
+     */
     public String getUserName()
     {
         return m_userName;
     }
 
+    /**
+     * Setter for the userID variable
+     * @param t_userID string to set
+     */
     public void setUserID(String t_userID)
     {
         m_userID = t_userID;
     }
 
+    /**
+     * Getter for the userID variable
+     * @return m_userID
+     */
     public String getUserID()
     {
         return m_userID;
     }
 
 
-
+    /**
+     * Writes a new xml contact file
+     * @param t_activity activity
+     * @param t_model
+     * @param t_userName
+     */
     public static void writeNewContact( ChatListActivity t_activity, ArrayList<ContactXmlModel>t_model, String t_userName)
     {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -130,6 +162,12 @@ public class ContactXmlModel {
 
     }
 
+    /**
+     * Reads the xml contact file
+     * @param t_activity
+     * @param t_userName
+     * @return
+     */
     public static ArrayList<ContactXmlModel> readContactXml(ChatListActivity t_activity, String t_userName)
     {
         ArrayList<ContactXmlModel>r_contacts = new  ArrayList<ContactXmlModel>();
@@ -152,12 +190,6 @@ public class ContactXmlModel {
                     a_model.setUserID(a_el.getElementsByTagName("userID").item(0).getTextContent());
                     r_contacts.add(a_model);
                 }
-
-
-
-
-
-
 
             }
 

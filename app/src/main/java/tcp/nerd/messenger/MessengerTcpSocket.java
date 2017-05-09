@@ -127,6 +127,9 @@ public class MessengerTcpSocket extends Thread{
     }
 
     public void run() {
+
+
+
             while (m_isRunning) {
                 if( m_socket == null || m_socket.isConnected() == false) {
                     connect();
@@ -151,6 +154,7 @@ public class MessengerTcpSocket extends Thread{
                 if (m_socket != null && m_socket.isConnected()) {
 
                         for (int i = 0; i < m_messagesToSend.size(); i++) {
+                            Log.w("SEND MESSAGE", m_messagesToSend.get(i));
                             m_writer.println(m_messagesToSend.get(i) + "\n");
                             m_writer.flush();
                             m_messagesToSend.clear();

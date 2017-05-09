@@ -27,11 +27,23 @@ import main.nerd.messenger.SocketController;
 public class ContactAvaiableAdapter extends ArrayAdapter<ContactXmlModel> {
     private ChatListActivity m_activity;
 
+    /**
+     * Constructor to set variables
+     * @param context context needed to call super constructor
+     * @param t_array arrayList needed to call super constructor
+     */
     public ContactAvaiableAdapter(@NonNull Context context, ArrayList<ContactXmlModel>t_array) {
         super(context,0,t_array);
         m_activity = (ChatListActivity)context;
     }
 
+    /**
+     * Overridden method to get the View
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position

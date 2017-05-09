@@ -14,6 +14,14 @@ import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity implements TcpMessageReader {
 
+
+    /**
+     * On create function is called as soon as the activity is started
+     * Starts onclickListener for registration button and checks the filled out field for correctness
+     * Registers you if correct, displays error message if not
+     *
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -37,12 +45,23 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
         });
     }
 
+    /**
+     * Starts the Login Activity for when the registration was successful
+     */
+
     private void startLoginActivity()
     {
         Intent a_contactListActivity = new Intent( RegisterActivity.this,MainActivity.class );
         finish();
         RegisterActivity.this.startActivity(a_contactListActivity);
     }
+
+    /**
+     * Reads Messages from TCP
+     * Starts functions based on Message content
+     *
+     * @param t_messages Array of messages
+     */
 
     @Override
     public void readMessages(final ArrayList<String> t_messages) {
@@ -66,11 +85,21 @@ public class RegisterActivity extends AppCompatActivity implements TcpMessageRea
         });
     }
 
+
+    /**
+     * Returns name for TcpMessageReader interface
+     *
+     * @return "register" which is the name of this Activity
+     */
     @Override
     public String getName() {
         return "register";
     }
 
+
+    /**
+     * Removes messageReader from SocketController
+     */
     @Override
     public void onDestroy()
     {

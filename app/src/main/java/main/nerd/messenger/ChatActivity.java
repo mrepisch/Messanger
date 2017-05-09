@@ -19,35 +19,26 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
 
     private  ChatModel m_model = null;
     private boolean m_keepUpdating = true;
-    ListView listView;
-    MessageAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
-        SocketController.getInstance().addTcMessageReader(this);
         String a_userName = getIntent().getStringExtra("username");
-
         m_model = SocketController.getInstance().getChat(a_userName);
         final EditText a_msg = (EditText)findViewById(R.id.msg);
-        listView = (ListView) findViewById(R.id.msgview);
-        adapter = new MessageAdapter(ChatActivity.this, m_model.getMessages());
-        listView.setAdapter(adapter);
-
-
+        SocketController.getInstance().addTcMessageReader(this);
         Button a_sendBtn = (Button)findViewById(R.id.send);
         a_sendBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 final String a_msgStr = a_msg.getText().toString().replace("\n","");
                 SocketController.getInstance().getSocket().sendMessage("Message:"+ SocketController.getInstance().getuserName()+":"+
                         m_model.getUserNameTo()+":"+a_msgStr );
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
                         m_model.addMessages(a_msgStr,SocketController.getInstance().getuserName());
-                        a_msg.setText("");
-
-
+                        a_msg.setText("");                    }
+                });
 
             }
         });
@@ -73,17 +64,15 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
         loadChat();
     }
 
-    private synchronized void loadChat()
+    void loadChat()
     {
-        Log.w("FUNCTION CALL","LOAD CHAT");
         if( m_model != null)
         {
-            Log.w("LOADING OR REFRESHING CHAT","");
-            adapter.swapItems(m_model.getMessages());
-        }
-        else
-        {
-            Log.w("m_model in ChatActivity is null","YOU FUCKING FAILD" );
+            MessageAdapter adapter = new MessageAdapter(this, m_model.getMessages());
+
+            ListView listView = (ListView) findViewById(R.id.msgview);
+            listView.setAdapter(adapter);
+
         }
     }
 
@@ -97,20 +86,12 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
                     if (a_msg.contains("Message")) {
                         a_msgToDelete = a_msg;
                         String[] a_split = a_msg.split(":");
-
                         if( a_split.length >= 3)
                         {
                             if( m_model != null)
                             {
-                                Log.w("Message Receivt from Server :",a_split[2]);
                                 Log.w("adding msg",a_split[2]);
                                 m_model.addMessages(a_split[2],a_split[1]);
-
-
-
-                            }else
-                            {
-                                Log.e("MODEL IS NULL ","YOU FUCKING FAILD");
                             }
                         }
                     }
@@ -119,17 +100,10 @@ public class ChatActivity extends FragmentActivity implements  TcpMessageReader{
                 loadChat();
             }
         });
-
     }
 
     @Override
     public String getName() {
         return "chat";
-    }
-
-    public void onDestroy()
-    {
-        super.onDestroy();
-        SocketController.getInstance().removeMessageReader(getName());
     }
 }
