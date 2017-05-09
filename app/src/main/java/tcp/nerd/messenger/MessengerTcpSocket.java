@@ -116,7 +116,17 @@ public class MessengerTcpSocket extends Thread{
      */
     public synchronized  void sendMessage(String t_msg)
     {
-        m_messagesToSend.add(t_msg);
+        boolean a_found = false;
+        for( String msg : m_messagesToSend)
+        {
+            if( t_msg.equals(msg))
+            {
+                a_found = true;
+            }
+        }
+        if( !a_found) {
+            m_messagesToSend.add(t_msg);
+        }
     }
 
     /**

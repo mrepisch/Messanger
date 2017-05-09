@@ -147,7 +147,7 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
                         sleep(1000);
                         for (int i = 0; i < m_contacts.size(); i++) {
                                 SocketController.getInstance().getSocket().sendMessage("Contact:search_for_userID:" + m_contacts.get(i).getUserName());
-
+                                sleep(500);
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
