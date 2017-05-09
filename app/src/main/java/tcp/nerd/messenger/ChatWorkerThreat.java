@@ -14,11 +14,17 @@ public class ChatWorkerThreat extends Thread  {
 
     private boolean m_keepUpdating = true;
 
+    /**
+     * Sets name of Thread
+     */
     public ChatWorkerThreat()
     {
         setName("workerthread");
     }
 
+    /**
+     * Waits for messages to arrive and saves them in arrayList
+     */
     public void run()
     {
         while( m_keepUpdating) {

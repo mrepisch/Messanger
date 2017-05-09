@@ -42,6 +42,10 @@ public class MessengerTcpSocket extends Thread{
 
     MainActivity m_activity;
 
+    /**
+     * Constructor to set and initialize variables
+     * @param t_activity activity to be set in m_activity
+     */
     public MessengerTcpSocket(MainActivity t_activity)
     {
         super("socket");
@@ -51,7 +55,9 @@ public class MessengerTcpSocket extends Thread{
         m_isRunning = true;
     }
 
-
+    /**
+     * Connects to tcp server
+     */
     public void connect() {
         //here you must put your computer's IP address.
         InetAddress serverAddr = null;
@@ -95,21 +101,36 @@ public class MessengerTcpSocket extends Thread{
         }
     }
 
+    /**
+     * Adds message to the arrayList of received messages
+     * @param t_message the message that has to be added
+     */
     public synchronized void addMessage(String t_message)
     {
         m_receivt.add(t_message);
     }
 
+    /**
+     * Adds message to the arrayList of messages that have to sent
+     * @param t_msg message that has to be added
+     */
     public synchronized  void sendMessage(String t_msg)
     {
         m_messagesToSend.add(t_msg);
     }
 
+    /**
+     * Getter for received messaged
+     * @return arrayList m_receivt of received messages
+     */
     public synchronized ArrayList<String>getReceivedList()
     {
         return m_receivt;
     }
 
+    /**
+     * Closes socket connection
+     */
     public synchronized void closeConnection()
     {
         try {
@@ -126,9 +147,10 @@ public class MessengerTcpSocket extends Thread{
         }
     }
 
+    /**
+     * Runs server
+     */
     public void run() {
-
-
 
             while (m_isRunning) {
                 if( m_socket == null || m_socket.isConnected() == false) {
@@ -184,18 +206,28 @@ public class MessengerTcpSocket extends Thread{
             if (m_socket != null) {
                 closeConnection();
             }
-        }
+    }
 
-
-
+    /**
+     * Setter for Ip address
+     * @param ip ip address to be set
+     */
     public synchronized void setIpAndConnect(String ip){
         S_SERVERIP = ip;
     }
 
+    /**
+     * Setter for the server running state
+     * @param t_isRunning boolean if the server is running or not
+     */
     public void setIsRunning(boolean t_isRunning){
         m_isRunning = t_isRunning;
     }
 
+    /**
+     * Getter for connection value
+     * @return boolean of isConnected from Socket
+     */
     public synchronized boolean getIsConnected()
     {
         if( m_socket != null) {
