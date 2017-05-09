@@ -37,7 +37,6 @@ public class ChatListActivity extends AppCompatActivity implements TcpMessageRea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatlist);
-        SocketController.getInstance().startChatWorkerThreath();
 
         SocketController.getInstance().addTcMessageReader(this);
         Button a_searchBtn = (Button) findViewById(R.id.searchbtn);

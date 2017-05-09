@@ -27,47 +27,86 @@ public class SocketController {
 
     private ArrayList<TcpMessageReader>m_activitys = new ArrayList<TcpMessageReader>();
 
+    /**
+     * Singleton method to return the instance
+     * @return instance
+     */
     public static SocketController getInstance() {
         return ourInstance;
     }
 
+    /**
+     * Empty base constructor
+     */
     private SocketController() {
     }
 
+    /**
+     * Setter for m_userName
+     * @param t_username username to be set
+     */
     public void setUserName( String t_username){
         m_userName = t_username;
     }
 
+    /**
+     * Getter for m_userName
+     * @return m_userName variable
+     */
     public String getuserName()
     {
         return m_userName;
     }
 
+    /**
+     * Getter for messages in socket
+     * @return arrayList of messages
+     */
     public synchronized ArrayList<String> getReceivtMessages()
     {
         return m_socket.getReceivedList();
     }
 
+    /**
+     * Setter for m_hasMessages
+     * @param t_hasMessages boolean to be set
+     */
     public synchronized void setHasMsgs(boolean t_hasMessages)
     {
         m_hasMessages = t_hasMessages;
     }
 
+    /**
+     * Getter for m_hasMessages
+     * @return m_hasMessages
+     */
     public synchronized boolean gethasMsgs()
     {
         return m_hasMessages;
     }
 
+    /**
+     * Getter for m_socket
+     * @return socket m_socket
+     */
     public synchronized  MessengerTcpSocket getSocket()
     {
         return m_socket;
     }
 
+    /**
+     * Setter for m_UserID
+     * @param t_userID userID to be set
+     */
     public synchronized void setUserID(String t_userID)
     {
         m_userID = t_userID;
     }
 
+    /**
+     * Removes message from received ones
+     * @param t_msg the message that has to be deleted
+     */
     public void removeMsg(String t_msg)
     {
         if( t_msg != null) {
@@ -81,11 +120,19 @@ public class SocketController {
         }
     }
 
+    /**
+     * Adds {@link TcpMessageReader} to the activities
+     * @param t_reader the reader to be added
+     */
     public synchronized void addTcMessageReader(TcpMessageReader t_reader)
     {
         m_activitys.add(t_reader);
     }
 
+    /**
+     * Removes {@link TcpMessageReader} from activity
+     * @param name of the activity from which the messageReader has to be removed
+     */
     public synchronized void removeMessageReader(String name)
     {
         for( int i = 0; i < m_activitys.size(); i++)
@@ -97,6 +144,9 @@ public class SocketController {
         }
     }
 
+    /**
+     * Processes the messages
+     */
     public synchronized void processMessage()
     {
         for( int i = 0; i < m_activitys.size(); i++)
@@ -107,6 +157,11 @@ public class SocketController {
         }
     }
 
+    /**
+     * Sets the Ip and starts the socket
+     * @param t_ip ip to be set
+     * @param t_activity activity to which the socket has to be added
+     */
     public synchronized void setIpAndStartSocket(String t_ip,MainActivity t_activity)
     {
         m_socket = new MessengerTcpSocket(t_activity);
@@ -115,6 +170,11 @@ public class SocketController {
 
     }
 
+    /**
+     * Gets chat from ChatModel by username
+     * @param a_userName the username from which the chat has to be get
+     * @return chatModel of the corresponding user
+     */
     public synchronized ChatModel getChat(String a_userName) {
         ChatModel r_mode = null;
         for( int i = 0; i < m_chatModels.size(); i++)
@@ -127,6 +187,10 @@ public class SocketController {
         return r_mode;
     }
 
+    /**
+     * Adds chat to m_chatModel arrayList
+     * @param chatModel chatModel to be added
+     */
     public void addChat(ChatModel chatModel) {
         m_chatModels.add(chatModel);
     }
@@ -139,6 +203,10 @@ public class SocketController {
         return true;
     }
 
+    /**
+     * Removes chat from m_chatModel arrayList
+     * @param userName userName of the Chat that has to be removed
+     */
     public void removeChat(String userName) {
         for( int i = 0; i < m_chatModels.size(); i++)
         {
@@ -149,7 +217,4 @@ public class SocketController {
         }
     }
 
-    public void startChatWorkerThreath() {
-        //m_chatWorker.start();
-    }
 }
